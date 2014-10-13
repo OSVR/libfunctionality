@@ -25,24 +25,18 @@
 // limitations under the License.
 
 // Internal Includes
-#include "DummyPlugin.h"
+// - none
 
 // Library/third-party includes
-// - none
+#include <libfunctionality/ModuleInterface.h>
 
 // Standard includes
 #include <iostream>
 
 
-#ifndef LIBFUNC_STATIC
-extern "C" char libfunc_ep_com_sensics_libfunc_tests_dummyplugin(void * opaque);
-extern "C" char libfunc_entry_point(void * opaque) {
-	return libfunc_ep_com_sensics_libfunc_tests_dummyplugin(opaque);
-}
-#endif
+LIBFUNC_MODULE(com_sensics_libfunc_tests_dummyplugin)
 
-
-char libfunc_ep_com_sensics_libfunc_tests_dummyplugin(void *) {
+char LIBFUNC_ENTRY_POINT(com_sensics_libfunc_tests_dummyplugin)(void *) {
 	std::cout << "Loaded plugin!" << std::endl;
 	return 0;
 }
