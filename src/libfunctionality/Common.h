@@ -1,15 +1,15 @@
 /** @file
     @brief Header defining basic macros, etc. required for libfunctionality.
 
-	Header is "C-safe"
+    Header is "C-safe"
 
     @date 2014
 
     @author
-	Ryan Pavlik
-	<ryan@sensics.com>
-	<http://sensics.com>
-	
+    Ryan Pavlik
+    <ryan@sensics.com>
+    <http://sensics.com>
+
 */
 
 /*
@@ -31,7 +31,6 @@ limitations under the License.
 #ifndef INCLUDED_Common_h_GUID_E153463F_0E07_43BE_DDDA_C141EA9B186D
 #define INCLUDED_Common_h_GUID_E153463F_0E07_43BE_DDDA_C141EA9B186D
 
-
 /* Internal Includes */
 /* - none */
 
@@ -49,14 +48,15 @@ limitations under the License.
 /** @brief Utility macro for token pasting aka concatenation
  *  @internal
  */
-#define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A ## B)
+#define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
-/** @brief Macro to generate the unique entry point name for each module. 
+/** @brief Macro to generate the unique entry point name for each module.
  *  @internal
  */
 #define LIBFUNC_DETAIL_EP_NAME(MODNAME) LIBFUNC_DETAIL_CAT(libfunc_ep_, MODNAME)
 
-/** @brief The canonical name of the single opaque pointer argument to the entry point.
+/** @brief The canonical name of the single opaque pointer argument to the entry
+ * point.
  *  @internal
  */
 #define LIBFUNC_DETAIL_PARAM_NAME opaque
@@ -64,22 +64,26 @@ limitations under the License.
 /** @brief Macro to generate a function declaration of the entry point type.
  *  @internal
  */
-#define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME) char FUNCNAME (void * LIBFUNC_DETAIL_PARAM_NAME)
+#define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME)                                   \
+    char FUNCNAME(void *LIBFUNC_DETAIL_PARAM_NAME)
 
 /** @brief The name of the common entry point used in dynamic loading mode.
  *  @internal
  */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME libfunc_entry_point
 
-/** @brief The declaration of the common entry point used in dynamic loading mode.
+/** @brief The declaration of the common entry point used in dynamic loading
+ * mode.
  *  @internal
  */
-#define LIBFUNC_DETAIL_EP_COMMON_DECLARATION LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_COMMON_NAME)
+#define LIBFUNC_DETAIL_EP_COMMON_DECLARATION                                   \
+    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_COMMON_NAME)
 
 /** @brief The declaration of the unique entry point for a module.
  *  @internal
  */
-#define LIBFUNC_DETAIL_EP_DECLARATION(MODNAME) LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(MODNAME))
+#define LIBFUNC_DETAIL_EP_DECLARATION(MODNAME)                                 \
+    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(MODNAME))
 
 /** @brief Return code from entry point in case of success. */
 #define LIBFUNC_RETURN_SUCCESS (0)
@@ -88,22 +92,23 @@ limitations under the License.
 #define LIBFUNC_RETURN_FAILURE (1)
 
 #ifdef __cplusplus
-	/** @brief Wrapper for extern "C" when compiling in C++ mode.
-	 *  @internal
-	 */
-	#define LIBFUNC_DETAIL_EP_DECORATION extern "C"
+/** @brief Wrapper for extern "C" when compiling in C++ mode.
+ *  @internal
+ */
+#define LIBFUNC_DETAIL_EP_DECORATION extern "C"
 #else
-	/** @brief Wrapper for extern "C" when compiling in C++ mode.
-	 *  @internal
-	 */
-	#define LIBFUNC_DETAIL_EP_DECORATION
+/** @brief Wrapper for extern "C" when compiling in C++ mode.
+ *  @internal
+ */
+#define LIBFUNC_DETAIL_EP_DECORATION
 #endif
 
 #ifdef LIBFUNC_STATIC
-	/* In static mode, we don't create the commonly-named entry point, just the unique one */
-	#define LIBFUNC_MODULE_DECLARATION(MODNAME) LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(MODNAME);
+/* In static mode, we don't create the commonly-named entry point, just the
+ * unique one */
+#define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(MODNAME);
 #else
-	#define LIBFUNC_MODULE_DECLARATION(MODNAME) LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
+#define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
 #endif
-
-
