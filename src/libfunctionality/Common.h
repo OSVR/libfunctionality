@@ -95,13 +95,21 @@ limitations under the License.
 /** @brief Wrapper for extern "C" when compiling in C++ mode.
  *  @internal
  */
-#define LIBFUNC_DETAIL_EP_DECORATION extern "C"
+#define LIBFUNC_DETAIL_EP_EXTERN extern "C"
 #else
 /** @brief Wrapper for extern "C" when compiling in C++ mode.
  *  @internal
  */
-#define LIBFUNC_DETAIL_EP_DECORATION
+#define LIBFUNC_DETAIL_EP_EXTERN
 #endif
+
+#if defined(_WIN32) && ! defined(LIBFUNC_STATIC)
+#define LIBFUNC_DETAIL_EP_EXPORT __declspec(dllexport)
+#else
+#define LIBFUNC_DETAIL_EP_EXPORT
+#endif
+
+#define LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_EXTERN LIBFUNC_DETAIL_EP_EXPORT
 
 #ifdef LIBFUNC_STATIC
 /* In static mode, we don't create the commonly-named entry point, just the
@@ -111,4 +119,6 @@ limitations under the License.
 #else
 #define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
+#endif
+
 #endif
