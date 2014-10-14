@@ -72,6 +72,12 @@ limitations under the License.
  */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME libfunc_entry_point
 
+/** @brief The string name of the common entry point.
+ *  @todo make this use c preproc stringize while dodging portability problems.
+ *  @internal
+ */
+#define LIBFUNC_DETAIL_EP_COMMON_NAME_STRING "libfunc_entry_point"
+
 /** @brief The declaration of the common entry point used in dynamic loading
  * mode.
  *  @internal
