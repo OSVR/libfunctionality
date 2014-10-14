@@ -42,8 +42,8 @@ namespace libfunc {
 		@param opaque Optional, opaque pointer to data. Both your app and the module have to agree on what this means.
 		@throws BadModuleName, CannotLoadModule, CannotLoadEntryPoint, ModuleEntryPointFailed
 	*/
-	void loadModuleByName(const char * n, void * opaque);
-	void loadModuleByName(std::string const& n, void * opaque);
+	void loadModuleByName(const char * n, void * opaque = NULL);
+	void loadModuleByName(std::string const& n, void * opaque = NULL);
 
 } // end of namespace libfunc
 
