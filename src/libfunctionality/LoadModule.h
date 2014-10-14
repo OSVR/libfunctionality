@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Header for use by client software in C++.
 
     @date 2014
 
@@ -28,12 +28,23 @@
 #define INCLUDED_LoadModule_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
 
 // Internal Includes
-// - none
+#include <libfunctionality/Exceptions.h>
 
 // Library/third-party includes
 // - none
 
 // Standard includes
-// - none
+#include <string>
+
+namespace libfunc {
+	/** @brief Attempts to load a module of the given name.
+		@param n Module name - not a full path! (Can leave off extension as well)
+		@param opaque Optional, opaque pointer to data. Both your app and the module have to agree on what this means.
+		@throws BadModuleName, CannotLoadModule, CannotLoadEntryPoint, ModuleEntryPointFailed
+	*/
+	void loadModuleByName(const char * n, void * opaque);
+	void loadModuleByName(std::string const& n, void * opaque);
+
+} // end of namespace libfunc
 
 #endif // INCLUDED_LoadModule_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
