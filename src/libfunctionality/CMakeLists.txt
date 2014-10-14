@@ -1,7 +1,10 @@
 include_directories(${LIBFUNCTIONALITY_INCLUDE_DIRS})
-add_library(functionality
-	Common.h
+
+set(API
+    Common.h
     Exceptions.h
-	LoadModule.cpp
-	LoadModule.h
+    LoadModule.h
 	ModuleInterface.h)
+
+set(SOURCE LoadModule.cpp)
+add_library(functionality ${API} ${SOURCE})
