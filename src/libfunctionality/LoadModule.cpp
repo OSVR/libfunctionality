@@ -53,7 +53,7 @@ void loadModuleByName(const char *n, void *opaque) {
     /// @todo support windows rt with this call:
     /// http://msdn.microsoft.com/en-us/library/windows/desktop/hh447159(v=vs.85).aspx
 
-    loadModuleByName(n, opaque);
+    loadModuleByName(std::string(n), opaque);
 }
 
 void loadModuleByName(std::string const &n, void *opaque) {
