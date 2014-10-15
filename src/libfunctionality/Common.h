@@ -40,6 +40,19 @@ limitations under the License.
 /* Standard includes */
 /* - none */
 
+/** @addtogroup pluginiface Plugin Writing
+* @{
+*/
+/** @brief Return type of the entry point function. */
+typedef char libfunc_ep_return_t;
+
+/** @brief Return code from entry point in case of success. */
+#define LIBFUNC_RETURN_SUCCESS (0)
+
+/** @brief Return code from entry point in case of failure. */
+#define LIBFUNC_RETURN_FAILURE (1)
+/** @} */
+
 /** @addtogroup impl Implementation Details
   * @brief Details to be considered "innards" and not a part of the public API.
   *
@@ -63,9 +76,6 @@ limitations under the License.
  */
 #define LIBFUNC_DETAIL_PARAM_NAME opaque
 
-/** @brief Return type of the entry point function. */
-typedef char libfunc_ep_return_t;
-
 /** @brief Macro to generate a function declaration of the entry point type. */
 #define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME)                                   \
     libfunc_ep_return_t FUNCNAME(void *LIBFUNC_DETAIL_PARAM_NAME)
@@ -85,21 +95,7 @@ typedef char libfunc_ep_return_t;
 /** @brief The declaration of the unique entry point for a plugin. */
 #define LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME)                              \
     LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(PLUGINNAME))
-/** @} */
 
-/** @addtogroup pluginiface Plugin Writing
- * @{
- */
-/** @brief Return code from entry point in case of success. */
-#define LIBFUNC_RETURN_SUCCESS (0)
-
-/** @brief Return code from entry point in case of failure. */
-#define LIBFUNC_RETURN_FAILURE (1)
-/** @} */
-
-/** @addtogroup impl Implementation Details
-* @{
-*/
 #ifdef __cplusplus
 /** @brief Wrapper for extern "C" when compiling in C++ mode. */
 #define LIBFUNC_DETAIL_EP_EXTERN extern "C"
