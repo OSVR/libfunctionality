@@ -49,22 +49,32 @@ limitations under the License.
 #define LIBFUNC_ENTRY_POINT(MODNAME) LIBFUNC_DETAIL_EP_NAME(MODNAME)
 
 #ifdef LIBFUNC_STATIC
-/* In static mode, we don't create the commonly-named entry point, just the
- * unique one */
+/** @brief Declaration for entry point.
+*  @internal
+*/
 #define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(MODNAME);
 #else
+/** @brief Declaration for entry point.
+ *  @internal
+ */
 #define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
 #endif
 
 #ifdef LIBFUNC_STATIC
-/* In static mode, we don't create the commonly-named entry point, just the
+/** @brief Implementation for LIBFUNC_MODULE.
+ *  @internal
+ *
+ * In static mode, we don't create the commonly-named entry point, just the
  * unique one */
 #define LIBFUNC_DETAIL_MODULE(MODNAME)                                         \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(MODNAME);
 #else
-/* In dynamic mode, we have to create the common entry point as a trampoline to
+/** @brief Implementation for LIBFUNC_MODULE.
+ *  @internal
+ *
+ * In dynamic mode, we have to create the common entry point as a trampoline to
  * the unique one. */
 #define LIBFUNC_DETAIL_MODULE(MODNAME)                                         \
     LIBFUNC_DETAIL_EP_DECLARATION(MODNAME);                                    \

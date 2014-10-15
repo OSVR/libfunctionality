@@ -40,6 +40,9 @@ limitations under the License.
 /* Standard includes */
 /* - none */
 
+/** @addtogroup impl Implementation Details
+  * @{
+  */
 /** @brief Utility macro used in concatenation.
  *  @internal
  */
@@ -90,13 +93,21 @@ limitations under the License.
  */
 #define LIBFUNC_DETAIL_EP_DECLARATION(MODNAME)                                 \
     LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(MODNAME))
+/** @} */
 
+/** @addtogroup modiface Module Writing
+ * @{
+ */
 /** @brief Return code from entry point in case of success. */
 #define LIBFUNC_RETURN_SUCCESS (0)
 
 /** @brief Return code from entry point in case of failure. */
 #define LIBFUNC_RETURN_FAILURE (1)
+/** @} */
 
+/** @addtogroup impl Implementation Details
+* @{
+*/
 #ifdef __cplusplus
 /** @brief Wrapper for extern "C" when compiling in C++ mode.
  *  @internal
@@ -127,5 +138,6 @@ limitations under the License.
 #define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
 #endif
+/** @} */
 
 #endif

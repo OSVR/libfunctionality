@@ -36,14 +36,26 @@
 // Standard includes
 #include <string>
 
+/// @brief Main C++ namespace for libfunctionality clients
 namespace libfunc {
-	/** @brief Attempts to load a module of the given name.
-		@param n Module name - not a full path! (Can leave off extension as well)
-		@param opaque Optional, opaque pointer to data. Both your app and the module have to agree on what this means.
-		@throws BadModuleName, CannotLoadModule, CannotLoadEntryPoint, ModuleEntryPointFailed
-	*/
-	void loadModuleByName(const char * n, void * opaque = NULL);
-	void loadModuleByName(std::string const& n, void * opaque = NULL);
+
+/// @defgroup loadmod Module Loading
+///@{
+
+/** @brief Attempts to load a module of the given name.
+    @param n Module name - not a full path! (Can leave off extension as well)
+    @param opaque Optional, opaque pointer to data. Both your app and the module
+    have to agree on what this means.
+
+    @throws exceptions::BadModuleName, exceptions::CannotLoadModule,
+    exceptions::CannotLoadEntryPoint,
+    exceptions::ModuleEntryPointFailed
+*/
+void loadModuleByName(const char *n, void *opaque = NULL);
+/** @overload
+*/
+void loadModuleByName(std::string const &n, void *opaque = NULL);
+/// @}
 
 } // end of namespace libfunc
 
