@@ -38,29 +38,44 @@
 #include <string>
 
 namespace libfunc {
-struct BadModuleName : std::runtime_error {
-    BadModuleName()
-        : std::runtime_error("Given module name is not valid (null, etc.)") {}
-};
+namespace exceptions {
+    /// @brief Exception thrown upon an attempt to load a module with an invalid
+    /// name (null, empty)
+    struct BadModuleName : std::runtime_error {
+        /// @brief Constructor
+        BadModuleName()
+            : std::runtime_error(
+                  "Given module name is not valid (null, etc.)") {}
+    };
 
-struct CannotLoadModule : std::runtime_error {
-    explicit CannotLoadModule(std::string const &n)
-        : std::runtime_error("Failed to load the module " + n) {}
-};
+    /// @brief Exception thrown when loading a dynamic module fails (before
+    /// symbol
+    /// lookup or entry point calling)
+    struct CannotLoadModule : std::runtime_error {
+        /// @brief Constructor
+        explicit CannotLoadModule(std::string const &n)
+            : std::runtime_error("Failed to load the module " + n) {}
+    };
 
-struct CannotLoadEntryPoint : std::runtime_error {
-    explicit CannotLoadEntryPoint(std::string const &n)
-        : std::runtime_error("Could not access the libfunctionality entry "
-                             "point of the module " +
-                             n) {}
-};
+    /// @brief Exception thrown when loading the symbol for the entry point
+    /// fails
+    struct CannotLoadEntryPoint : std::runtime_error {
+        /// @brief Constructor
+        explicit CannotLoadEntryPoint(std::string const &n)
+            : std::runtime_error("Could not access the libfunctionality entry "
+                                 "point of the module " +
+                                 n) {}
+    };
 
-struct ModuleEntryPointFailed : std::runtime_error {
-	explicit ModuleEntryPointFailed(std::string const &n)
-        : std::runtime_error(
-              "Loaded the module " + n +
-              " and its entry point, but executing its entry point failed.") {}
-};
+    /// @brief Exception thrown when the entry point function returns failure.
+    struct ModuleEntryPointFailed : std::runtime_error {
+        /// @brief Constructor
+        explicit ModuleEntryPointFailed(std::string const &n)
+            : std::runtime_error("Loaded the module " + n +
+                                 " and its entry point, but executing its "
+                                 "entry point failed.") {}
+    };
+} // end of namespace exceptions
 } // end of namespace libfunc
 
 #endif // INCLUDED_Exceptions_h_GUID_65776C52_6607_42B4_5DED_5305A9EB1FC4

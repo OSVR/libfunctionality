@@ -36,6 +36,9 @@
 
 // PLATFORM-INDEPENDENT CODE
 namespace libfunc {
+/// @brief Typedef for entry point function. Must be kept in-sync with
+/// LIBFUNC_DETAIL_EP_FUNCTYPE() in Common.h
+/// @internal
 typedef char (*entry_point_t)(void *);
 } // end of namespace libfunc
 
@@ -48,36 +51,37 @@ typedef char (*entry_point_t)(void *);
 namespace libfunc {
 void loadModuleByName(const char *n, void *opaque) {
     if (!n) {
-        throw BadModuleName();
+        throw exceptions::BadModuleName();
     }
-    /// @todo support windows rt with this call:
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/hh447159(v=vs.85).aspx
 
     loadModuleByName(std::string(n), opaque);
 }
 
 void loadModuleByName(std::string const &n, void *opaque) {
     if (n.empty()) {
-        throw BadModuleName();
+        throw exceptions::BadModuleName();
     }
+
+    /// @todo support windows rt with this call:
+    /// http://msdn.microsoft.com/en-us/library/windows/desktop/hh447159(v=vs.85).aspx
 
     /// @todo don't leak this
     HMODULE lib = LoadLibrary(n.c_str());
 
     if (!lib) {
-        throw CannotLoadModule(n);
+        throw exceptions::CannotLoadModule(n);
     }
 
     FARPROC raw_ep = GetProcAddress(lib, LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
     if (!raw_ep) {
-        throw CannotLoadEntryPoint(n);
+        throw exceptions::CannotLoadEntryPoint(n);
     }
 
     entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
 
     char result = (*ep)(opaque);
     if (result != LIBFUNC_RETURN_SUCCESS) {
-        throw ModuleEntryPointFailed(n);
+        throw exceptions::ModuleEntryPointFailed(n);
     }
 }
 } // end of namespace libfunc
