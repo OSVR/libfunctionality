@@ -43,6 +43,30 @@ limitations under the License.
 /* - none */
 
 /** @addtogroup pluginiface Plugin Writing
+ *  @brief API needed to write a plugin loadable by libfunctionality.
+ *
+ *  Any API you need beyond simply being loaded has to come from your host app
+ *  or library, this is expressly outside the scope of libfunctionality.
+ *
+ *  Each plugin needs a unique name. We encourage, but do not require, a scheme
+ *  based on "reverse domain name notation" with dots replaced by underscores.
+ *  (The plugin name must only contain characters valid as part of a C
+ *  identifier, since it's used to generate C identifiers.) We'll use
+ *  com_example_plugin as a placeholder below.
+ *
+ *  A plugin, at the minimum, consists of a single implementation file (c or
+ *  cpp) that:
+ *
+ *   - includes this file
+ *   - has a LIBFUNC_PLUGIN(com_example_plugin) call at global scope.
+ *   - defines an entry-point function:
+ *     - with return type libfunc_ep_return_t
+ *     - with the name substituted by LIBFUNC_ENTRY_POINT(com_example_plugin)
+ *     - taking a single argument of type void *. If you don't actually want
+ *       anything from your caller, don't provide a name for this argument to
+ *       avoid compiler warnings.
+ *     - that returns LIBFUNC_RETURN_SUCCESS if whatever the entry point had to
+ *       do worked properly, and LIBFUNC_RETURN_FAILURE if it didn't work right.
  *  @{
  */
 /** @brief Macro generating the name of the entry point function you implement.
