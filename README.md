@@ -10,9 +10,9 @@ Hacking
 
 Please use `clang-format` to keep the code tidy. The `.clang-format` 
 config file is in the root of the repository. We're basically using the 
-LLVM style, except with 4-space indentation and C++03 (since turning on 
-C++11 in `clang-format` sometimes makes things not work in 
-less-compelling compilers) 
+LLVM style, except with 4-space indentation, inner namespace indentation,
+and C++03 (since turning on C++11 in `clang-format` sometimes makes things
+not work in less-compelling compilers).
 
 If you're using Windows, please install a recent [llvm/clang 
 binary][llvmwin], and choose to add the directory to the path. (Makes it 

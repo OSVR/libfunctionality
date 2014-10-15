@@ -5,6 +5,7 @@ Standard:        Cpp03
 IndentWidth:     4
 TabWidth:        4
 UseTab:          Never
+NamespaceIndentation: Inner
 
 # AccessModifierOffset: -2
 # ConstructorInitializerIndentWidth: 4
