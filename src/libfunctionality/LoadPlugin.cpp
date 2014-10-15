@@ -39,7 +39,7 @@ namespace libfunc {
 /// @brief Typedef for entry point function. Must be kept in-sync with
 /// LIBFUNC_DETAIL_EP_FUNCTYPE() in Common.h
 /// @internal
-typedef char (*entry_point_t)(void *);
+typedef libfunc_ep_return_t (*entry_point_t)(void *);
 } // end of namespace libfunc
 
 // PLATFORM_SPECIFIC CODE
@@ -79,7 +79,7 @@ void loadPluginByName(std::string const &n, void *opaque) {
 
     entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
 
-    char result = (*ep)(opaque);
+    libfunc_ep_return_t result = (*ep)(opaque);
     if (result != LIBFUNC_RETURN_SUCCESS) {
         throw exceptions::PluginEntryPointFailed(n);
     }
