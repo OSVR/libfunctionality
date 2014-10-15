@@ -96,7 +96,9 @@ SORT_MEMBER_DOCS       = NO
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = src
+INPUT                  = src \
+                         README.md
+
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -109,7 +111,7 @@ RECURSIVE              = YES
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = ../README.md
+USE_MDFILE_AS_MAINPAGE = README.md
 
 # If the SOURCE_BROWSER tag is set to YES then a list of source files will be
 # generated. Documented entities will be cross-referenced with these sources.
