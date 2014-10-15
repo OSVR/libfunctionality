@@ -4,7 +4,7 @@ project(libfunctionality)
 # Custom CMake modules from https://github.com/rpavlik/cmake-modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this doesn't affect whether we can load shared libraries." ON)
+#option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this doesn't affect whether we can load shared libraries." OFF)
 
 include(CTest)
 

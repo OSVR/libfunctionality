@@ -1,2 +1,5 @@
+if(WIN32)
+    set(gtest_force_shared_crt ON)
+endif()
 add_subdirectory(gtest-1.7.0)
 add_subdirectory(cplusplus)
