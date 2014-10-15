@@ -1,7 +1,9 @@
 libfunctionality
 ================
 
-A minimal library for dynamically-loaded or statically-linked functionality modules.
+A minimal library for dynamically-loaded or statically-linked
+functionality modules, which we call **plugins**. What you do with them
+and how you interact with them is your business. How you load them is ours.
 
 License: Apache 2.0
 
