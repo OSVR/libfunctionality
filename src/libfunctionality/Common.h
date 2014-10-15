@@ -41,56 +41,44 @@ limitations under the License.
 /* - none */
 
 /** @addtogroup impl Implementation Details
+  * @brief Details to be considered "innards" and not a part of the public API.
+  *
+  * Possibly useful to developers working on libfunctionality, but not to those
+  * merely using its capabilities.
   * @{
   */
-/** @brief Utility macro used in concatenation.
- *  @internal
- */
+/** @brief Utility macro used in concatenation. */
 #define LIBFUNC_DETAIL_CAT_IMPL(X) X
 
-/** @brief Utility macro for token pasting aka concatenation
- *  @internal
- */
+/** @brief Utility macro for token pasting aka concatenation */
 #define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
 /** @brief Macro to generate the unique entry point name for each module.
- *  @internal
  */
 #define LIBFUNC_DETAIL_EP_NAME(MODNAME) LIBFUNC_DETAIL_CAT(libfunc_ep_, MODNAME)
 
 /** @brief The canonical name of the single opaque pointer argument to the entry
  * point.
- *  @internal
  */
 #define LIBFUNC_DETAIL_PARAM_NAME opaque
 
-/** @brief Macro to generate a function declaration of the entry point type.
- *  @internal
- */
+/** @brief Macro to generate a function declaration of the entry point type. */
 #define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME)                                   \
     char FUNCNAME(void *LIBFUNC_DETAIL_PARAM_NAME)
 
-/** @brief The name of the common entry point used in dynamic loading mode.
- *  @internal
- */
+/** @brief The name of the common entry point used in dynamic loading mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME libfunc_entry_point
 
 /** @brief The string name of the common entry point.
- *  @todo make this use c preproc stringize while dodging portability problems.
- *  @internal
+    @todo make this use c preproc stringize while dodging portability problems.
  */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME_STRING "libfunc_entry_point"
 
-/** @brief The declaration of the common entry point used in dynamic loading
- * mode.
- *  @internal
- */
+/** @brief Declaration of the common entry point used in dynamic mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_DECLARATION                                   \
     LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_COMMON_NAME)
 
-/** @brief The declaration of the unique entry point for a module.
- *  @internal
- */
+/** @brief The declaration of the unique entry point for a module. */
 #define LIBFUNC_DETAIL_EP_DECLARATION(MODNAME)                                 \
     LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(MODNAME))
 /** @} */
@@ -109,23 +97,22 @@ limitations under the License.
 * @{
 */
 #ifdef __cplusplus
-/** @brief Wrapper for extern "C" when compiling in C++ mode.
- *  @internal
- */
+/** @brief Wrapper for extern "C" when compiling in C++ mode. */
 #define LIBFUNC_DETAIL_EP_EXTERN extern "C"
 #else
-/** @brief Wrapper for extern "C" when compiling in C++ mode.
- *  @internal
- */
+/** @brief Wrapper for extern "C" when compiling in C++ mode. */
 #define LIBFUNC_DETAIL_EP_EXTERN
 #endif
 
 #if defined(_WIN32) && !defined(LIBFUNC_STATIC)
+/** @brief Wrapper for dllexport when needed. */
 #define LIBFUNC_DETAIL_EP_EXPORT __declspec(dllexport)
 #else
+/** @brief Wrapper for dllexport when needed. */
 #define LIBFUNC_DETAIL_EP_EXPORT
 #endif
-
+/** @brief Combination of all wrappers applied as decoration to a declaration.
+ */
 #define LIBFUNC_DETAIL_EP_DECORATION                                           \
     LIBFUNC_DETAIL_EP_EXTERN LIBFUNC_DETAIL_EP_EXPORT
 
