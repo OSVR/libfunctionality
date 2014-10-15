@@ -3,6 +3,7 @@ project(libfunctionality)
 
 option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this doesn't affect whether we can load shared libraries." ON)
 
+include(CTest)
 
 set(LIBFUNCTIONALITY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIBFUNCTIONALITY_LIBRARIES functionality)
@@ -18,4 +19,6 @@ if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 endif()
 
 add_subdirectory(src/libfunctionality)
-add_subdirectory(tests)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()

@@ -28,9 +28,39 @@
 #include <libfunctionality/LoadPlugin.h>
 
 // Library/third-party includes
-// - none
+#include "gtest/gtest.h"
 
 // Standard includes
 // - none
 
-int main() { libfunc::loadPluginByName("DummyPlugin", NULL); }
+TEST(load_dummy_plugin, cstr_name_null_data) {
+    ASSERT_NO_THROW({ libfunc::loadPluginByName("DummyPlugin", NULL); });
+}
+
+TEST(load_dummy_plugin, string_name_null_data) {
+    ASSERT_NO_THROW(
+        { libfunc::loadPluginByName(std::string("DummyPlugin"), NULL); });
+}
+
+TEST(load_dummy_plugin, cstr_name_no_data) {
+    ASSERT_NO_THROW({ libfunc::loadPluginByName("DummyPlugin"); });
+}
+
+TEST(load_dummy_plugin, string_name_no_data) {
+    ASSERT_NO_THROW({ libfunc::loadPluginByName(std::string("DummyPlugin")); });
+}
+
+TEST(load_dummy_plugin, cstr_name_int_data) {
+    const int orignum = 5;
+    int num = orignum;
+    ASSERT_NO_THROW({ libfunc::loadPluginByName("DummyPlugin", &num); });
+    ASSERT_EQ(orignum + 1, num);
+}
+
+TEST(load_dummy_plugin, string_name_int_data) {
+    const int orignum = 5;
+    int num = orignum;
+    ASSERT_NO_THROW(
+        { libfunc::loadPluginByName(std::string("DummyPlugin"), &num); });
+    ASSERT_EQ(orignum + 1, num);
+}
