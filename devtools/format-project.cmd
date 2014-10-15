@@ -1,3 +1,6 @@
 cd /d "%~dp0"
 cd ..
-clang-format -style=file -i src/libfunctionality/*.h src/libfunctionality/*.cpp tests/cplusplus/*.cpp tests/cplusplus/*.h
+forfiles /s /m *.cpp /C "clang-format -style=file -i @relpath"
+forfiles /s /m *.h /C "clang-format -style=file -i @relpath"
+rem src\libfunctionality\*.h src\libfunctionality\*.cpp tests\cplusplus\*.cpp tests\cplusplus\*.h
+pause
