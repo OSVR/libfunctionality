@@ -66,19 +66,22 @@ typedef char libfunc_ep_return_t;
 /** @brief Utility macro for token pasting aka concatenation */
 #define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
-/** @brief Macro to generate the unique entry point name for each plugin.
- */
+/** @brief Generate the unique entry point name for each plugin. */
 #define LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)                                     \
     LIBFUNC_DETAIL_CAT(libfunc_ep_, PLUGINNAME)
+
+/** @brief Macro to generate a function declaration of the entry point type. */
+#define LIBFUNC_DETAIL_EP_FUNCDECLARE(FUNCNAME, PARAMNAME)                     \
+    libfunc_ep_return_t FUNCNAME(void *PARAMNAME)
 
 /** @brief The canonical name of the single opaque pointer argument to the entry
  * point.
  */
 #define LIBFUNC_DETAIL_PARAM_NAME opaque
 
-/** @brief Macro to generate a function declaration of the entry point type. */
+/** @brief Generate an entry point declaration with the common arg name */
 #define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME)                                   \
-    libfunc_ep_return_t FUNCNAME(void *LIBFUNC_DETAIL_PARAM_NAME)
+    LIBFUNC_DETAIL_EP_FUNCDECLARE(FUNCNAME, LIBFUNC_DETAIL_PARAM_NAME)
 
 /** @brief The name of the common entry point used in dynamic loading mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME libfunc_entry_point

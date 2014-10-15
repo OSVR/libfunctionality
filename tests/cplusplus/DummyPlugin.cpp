@@ -31,15 +31,10 @@
 #include <libfunctionality/PluginInterface.h>
 
 // Standard includes
-#include <iostream>
+// - none
 
-LIBFUNC_PLUGIN(com_sensics_libfunc_tests_dummyplugin)
-
-libfunc_ep_return_t
-    LIBFUNC_ENTRY_POINT(com_sensics_libfunc_tests_dummyplugin)(void *opaque) {
-    std::cout << "Loaded plugin!" << std::endl;
+LIBFUNC_PLUGIN(com_sensics_libfunc_tests_dummyplugin, opaque) {
     if (opaque) {
-        std::cout << "Interacting with data!" << std::endl;
         int &data = *static_cast<int *>(opaque);
         data++;
     }
