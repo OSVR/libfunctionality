@@ -38,6 +38,7 @@
 #include <string>
 
 namespace libfunc {
+/// @brief libfunctionality-specific exceptions
 namespace exceptions {
     /// @brief Exception thrown upon an attempt to load a module with an invalid
     /// name (null, empty)
