@@ -33,6 +33,11 @@
 // Standard includes
 // - none
 
-LIBFUNC_PLUGIN_NO_PARAM(com_sensics_libfunc_tests_dummyplugin) {
+LIBFUNC_PLUGIN(com_sensics_libfunc_tests_dummypluginwithparam, opaque) {
+	if (!opaque) {
+		return LIBFUNC_RETURN_FAILURE;
+	}
+    int &data = *static_cast<int *>(opaque);
+    data++;
     return LIBFUNC_RETURN_SUCCESS;
 }
