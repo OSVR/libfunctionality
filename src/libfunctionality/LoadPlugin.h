@@ -24,8 +24,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_LoadModule_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
-#define INCLUDED_LoadModule_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
+#ifndef INCLUDED_LoadPlugin_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
+#define INCLUDED_LoadPlugin_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
 
 // Internal Includes
 #include <libfunctionality/Exceptions.h>
@@ -39,24 +39,24 @@
 /// @brief Main C++ namespace for libfunctionality clients
 namespace libfunc {
 
-/// @defgroup loadmod Module Loading
+/// @defgroup loadplugin Plugin Loading
 ///@{
 
-/** @brief Attempts to load a module of the given name.
-    @param n Module name - not a full path! (Can leave off extension as well)
-    @param opaque Optional, opaque pointer to data. Both your app and the module
+/** @brief Attempts to load a plugin of the given name.
+    @param n Plugin name - not a full path! (Can leave off extension as well)
+    @param opaque Optional, opaque pointer to data. Both your app and the plugin
     have to agree on what this means.
 
-    @throws exceptions::BadModuleName, exceptions::CannotLoadModule,
+    @throws exceptions::BadPluginName, exceptions::CannotLoadPlugin,
     exceptions::CannotLoadEntryPoint,
-    exceptions::ModuleEntryPointFailed
+    exceptions::PluginEntryPointFailed
 */
-void loadModuleByName(const char *n, void *opaque = NULL);
+void loadPluginByName(const char *n, void *opaque = NULL);
 /** @overload
 */
-void loadModuleByName(std::string const &n, void *opaque = NULL);
+void loadPluginByName(std::string const &n, void *opaque = NULL);
 /// @}
 
 } // end of namespace libfunc
 
-#endif // INCLUDED_LoadModule_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
+#endif // INCLUDED_LoadPlugin_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4

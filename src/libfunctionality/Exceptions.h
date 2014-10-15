@@ -42,9 +42,9 @@ namespace libfunc {
 namespace exceptions {
     /// @brief Exception thrown upon an attempt to load a module with an invalid
     /// name (null, empty)
-    struct BadModuleName : std::runtime_error {
+    struct BadPluginName : std::runtime_error {
         /// @brief Constructor
-        BadModuleName()
+        BadPluginName()
             : std::runtime_error(
                   "Given module name is not valid (null, etc.)") {}
     };
@@ -52,9 +52,9 @@ namespace exceptions {
     /// @brief Exception thrown when loading a dynamic module fails (before
     /// symbol
     /// lookup or entry point calling)
-    struct CannotLoadModule : std::runtime_error {
+    struct CannotLoadPlugin : std::runtime_error {
         /// @brief Constructor
-        explicit CannotLoadModule(std::string const &n)
+        explicit CannotLoadPlugin(std::string const &n)
             : std::runtime_error("Failed to load the module " + n) {}
     };
 
@@ -69,9 +69,9 @@ namespace exceptions {
     };
 
     /// @brief Exception thrown when the entry point function returns failure.
-    struct ModuleEntryPointFailed : std::runtime_error {
+    struct PluginEntryPointFailed : std::runtime_error {
         /// @brief Constructor
-        explicit ModuleEntryPointFailed(std::string const &n)
+        explicit PluginEntryPointFailed(std::string const &n)
             : std::runtime_error("Loaded the module " + n +
                                  " and its entry point, but executing its "
                                  "entry point failed.") {}

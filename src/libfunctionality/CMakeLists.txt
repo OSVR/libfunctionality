@@ -3,8 +3,8 @@ include_directories(${LIBFUNCTIONALITY_INCLUDE_DIRS})
 set(API
     Common.h
     Exceptions.h
-    LoadModule.h
-	ModuleInterface.h)
+    LoadPlugin.h
+    PluginInterface.h)
 
-set(SOURCE LoadModule.cpp)
+set(SOURCE LoadPlugin.cpp)
 add_library(functionality ${API} ${SOURCE})

@@ -25,7 +25,7 @@
 // limitations under the License.
 
 // Internal Includes
-#include "LoadModule.h"
+#include "LoadPlugin.h"
 #include "Common.h"
 
 // Library/third-party includes
@@ -49,17 +49,17 @@ typedef char (*entry_point_t)(void *);
 #include <windows.h>
 
 namespace libfunc {
-void loadModuleByName(const char *n, void *opaque) {
+void loadPluginByName(const char *n, void *opaque) {
     if (!n) {
-        throw exceptions::BadModuleName();
+        throw exceptions::BadPluginName();
     }
 
-    loadModuleByName(std::string(n), opaque);
+    loadPluginByName(std::string(n), opaque);
 }
 
-void loadModuleByName(std::string const &n, void *opaque) {
+void loadPluginByName(std::string const &n, void *opaque) {
     if (n.empty()) {
-        throw exceptions::BadModuleName();
+        throw exceptions::BadPluginName();
     }
 
     /// @todo support windows rt with this call:
@@ -69,7 +69,7 @@ void loadModuleByName(std::string const &n, void *opaque) {
     HMODULE lib = LoadLibrary(n.c_str());
 
     if (!lib) {
-        throw exceptions::CannotLoadModule(n);
+        throw exceptions::CannotLoadPlugin(n);
     }
 
     FARPROC raw_ep = GetProcAddress(lib, LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
@@ -81,7 +81,7 @@ void loadModuleByName(std::string const &n, void *opaque) {
 
     char result = (*ep)(opaque);
     if (result != LIBFUNC_RETURN_SUCCESS) {
-        throw exceptions::ModuleEntryPointFailed(n);
+        throw exceptions::PluginEntryPointFailed(n);
     }
 }
 } // end of namespace libfunc

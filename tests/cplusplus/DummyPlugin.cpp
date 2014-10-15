@@ -28,12 +28,12 @@
 // - none
 
 // Library/third-party includes
-#include <libfunctionality/ModuleInterface.h>
+#include <libfunctionality/PluginInterface.h>
 
 // Standard includes
 #include <iostream>
 
-LIBFUNC_MODULE(com_sensics_libfunc_tests_dummyplugin)
+LIBFUNC_PLUGIN(com_sensics_libfunc_tests_dummyplugin)
 
 char LIBFUNC_ENTRY_POINT(com_sensics_libfunc_tests_dummyplugin)(void *) {
     std::cout << "Loaded plugin!" << std::endl;

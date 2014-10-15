@@ -53,18 +53,22 @@ limitations under the License.
 /** @brief Utility macro for token pasting aka concatenation */
 #define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
-/** @brief Macro to generate the unique entry point name for each module.
+/** @brief Macro to generate the unique entry point name for each plugin.
  */
-#define LIBFUNC_DETAIL_EP_NAME(MODNAME) LIBFUNC_DETAIL_CAT(libfunc_ep_, MODNAME)
+#define LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)                                     \
+    LIBFUNC_DETAIL_CAT(libfunc_ep_, PLUGINNAME)
 
 /** @brief The canonical name of the single opaque pointer argument to the entry
  * point.
  */
 #define LIBFUNC_DETAIL_PARAM_NAME opaque
 
+/** @brief Return type of the entry point function. */
+typedef char libfunc_ep_return_t;
+
 /** @brief Macro to generate a function declaration of the entry point type. */
 #define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME)                                   \
-    char FUNCNAME(void *LIBFUNC_DETAIL_PARAM_NAME)
+    libfunc_ep_return_t FUNCNAME(void *LIBFUNC_DETAIL_PARAM_NAME)
 
 /** @brief The name of the common entry point used in dynamic loading mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME libfunc_entry_point
@@ -78,12 +82,12 @@ limitations under the License.
 #define LIBFUNC_DETAIL_EP_COMMON_DECLARATION                                   \
     LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_COMMON_NAME)
 
-/** @brief The declaration of the unique entry point for a module. */
-#define LIBFUNC_DETAIL_EP_DECLARATION(MODNAME)                                 \
-    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(MODNAME))
+/** @brief The declaration of the unique entry point for a plugin. */
+#define LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME)                              \
+    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(PLUGINNAME))
 /** @} */
 
-/** @addtogroup modiface Module Writing
+/** @addtogroup pluginiface Plugin Writing
  * @{
  */
 /** @brief Return code from entry point in case of success. */
@@ -119,10 +123,10 @@ limitations under the License.
 #ifdef LIBFUNC_STATIC
 /* In static mode, we don't create the commonly-named entry point, just the
  * unique one */
-#define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(MODNAME);
+#define LIBFUNC_PLUGIN_DECLARATION(PLUGINNAME)                                 \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);
 #else
-#define LIBFUNC_MODULE_DECLARATION(MODNAME)                                    \
+#define LIBFUNC_PLUGIN_DECLARATION(PLUGINNAME)                                 \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
 #endif
 /** @} */

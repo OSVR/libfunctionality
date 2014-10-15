@@ -25,7 +25,7 @@
 // limitations under the License.
 
 // Internal Includes
-#include <libfunctionality/LoadModule.h>
+#include <libfunctionality/LoadPlugin.h>
 
 // Library/third-party includes
 // - none
@@ -33,4 +33,4 @@
 // Standard includes
 // - none
 
-int main() { libfunc::loadModuleByName("DummyPlugin", NULL); }
+int main() { libfunc::loadPluginByName("DummyPlugin", NULL); }
