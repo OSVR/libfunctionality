@@ -42,12 +42,21 @@ limitations under the License.
 /* Standard includes */
 /* - none */
 
+/** @addtogroup modiface Module Writing
+ *  @{
+ */
 /** @brief Macro generating the name of the entry point function you implement.
  *  This should be called in place of the function name for your entry point,
  *  taking a void * and returning a char (see Common.h for return code defines).
+ *
+ *
  */
 #define LIBFUNC_ENTRY_POINT(MODNAME) LIBFUNC_DETAIL_EP_NAME(MODNAME)
+/** @} */
 
+/** @addtogroup impl Implementation Details
+ * @{
+ */
 #ifdef LIBFUNC_STATIC
 /** @brief Declaration for entry point.
 *  @internal
@@ -82,14 +91,19 @@ limitations under the License.
         return LIBFUNC_ENTRY_POINT(MODNAME)(LIBFUNC_DETAIL_PARAM_NAME);        \
     }
 #endif
+/** @} */
 
+/** @addtogroup modiface Module Writing
+ *  @{
+ */
 /** @brief Generate the boilerplate to implement a libfunctionality module.
  *
  *  Should be called at the beginning of a single implementation file in a
- *module.
+ *  module.
  *
  *  This resolves to the linking-type-specific implementation.
  */
 #define LIBFUNC_MODULE(MODNAME) LIBFUNC_DETAIL_MODULE(MODNAME)
+/** @} */
 
 #endif
