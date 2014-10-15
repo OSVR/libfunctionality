@@ -35,7 +35,13 @@
 
 LIBFUNC_PLUGIN(com_sensics_libfunc_tests_dummyplugin)
 
-char LIBFUNC_ENTRY_POINT(com_sensics_libfunc_tests_dummyplugin)(void *) {
+libfunc_ep_return_t
+    LIBFUNC_ENTRY_POINT(com_sensics_libfunc_tests_dummyplugin)(void *opaque) {
     std::cout << "Loaded plugin!" << std::endl;
-    return 0;
+    if (opaque) {
+        std::cout << "Interacting with data!" << std::endl;
+        int &data = *static_cast<int *>(opaque);
+        data++;
+    }
+    return LIBFUNC_RETURN_SUCCESS;
 }
