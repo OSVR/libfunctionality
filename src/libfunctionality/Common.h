@@ -116,15 +116,6 @@ typedef char libfunc_ep_return_t;
 #define LIBFUNC_DETAIL_EP_DECORATION                                           \
     LIBFUNC_DETAIL_EP_EXTERN LIBFUNC_DETAIL_EP_EXPORT
 
-#ifdef LIBFUNC_STATIC
-/* In static mode, we don't create the commonly-named entry point, just the
- * unique one */
-#define LIBFUNC_PLUGIN_DECLARATION(PLUGINNAME)                                 \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);
-#else
-#define LIBFUNC_PLUGIN_DECLARATION(PLUGINNAME)                                 \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
-#endif
 /** @} */
 
 #endif

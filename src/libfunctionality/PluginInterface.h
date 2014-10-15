@@ -81,15 +81,6 @@ limitations under the License.
 /** @addtogroup impl Implementation Details
  * @{
  */
-#ifdef LIBFUNC_STATIC
-/** @brief Declaration for entry point. */
-#define LIBFUNC_PLUGIN_DECLARATION(PLUGINNAME)                                 \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);
-#else
-/** @brief Declaration for entry point. */
-#define LIBFUNC_PLUGIN_DECLARATION(PLUGINNAME)                                 \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION;
-#endif
 
 #ifdef LIBFUNC_STATIC
 /** @brief Implementation for LIBFUNC_PLUGIN.
