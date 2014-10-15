@@ -36,10 +36,14 @@
 
 // PLATFORM-INDEPENDENT CODE
 namespace libfunc {
+/// @addtogroup impl
+/// @{
+
 /// @brief Typedef for entry point function. Must be kept in-sync with
 /// LIBFUNC_DETAIL_EP_FUNCTYPE() in Common.h
-/// @internal
 typedef libfunc_ep_return_t (*entry_point_t)(void *);
+
+/// @}
 } // end of namespace libfunc
 
 // PLATFORM_SPECIFIC CODE

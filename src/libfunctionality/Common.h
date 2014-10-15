@@ -43,8 +43,6 @@ limitations under the License.
 /** @addtogroup pluginiface Plugin Writing
 * @{
 */
-/** @brief Return type of the entry point function. */
-typedef char libfunc_ep_return_t;
 
 /** @brief Return code from entry point in case of success. */
 #define LIBFUNC_RETURN_SUCCESS (0)
@@ -69,6 +67,9 @@ typedef char libfunc_ep_return_t;
 /** @brief Generate the unique entry point name for each plugin. */
 #define LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)                                     \
     LIBFUNC_DETAIL_CAT(libfunc_ep_, PLUGINNAME)
+
+/** @brief Return type of the entry point function. */
+typedef char libfunc_ep_return_t;
 
 /** @brief Macro to generate a function declaration of the entry point type. */
 #define LIBFUNC_DETAIL_EP_FUNCDECLARE(FUNCNAME, PARAMNAME)                     \
