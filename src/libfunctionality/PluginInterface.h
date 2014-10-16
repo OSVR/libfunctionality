@@ -46,7 +46,7 @@ limitations under the License.
  * @{
  */
 
-#ifdef LIBFUNC_STATIC
+#ifdef LIBFUNC_STATIC_PLUGINS
 /** @brief Mode-specific implementation for LIBFUNC_PLUGIN.
  *
  * In static mode, we don't create the commonly-named entry point, just the

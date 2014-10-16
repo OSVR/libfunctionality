@@ -108,7 +108,7 @@ typedef char libfunc_ep_return_t;
 #define LIBFUNC_DETAIL_EP_EXTERN
 #endif
 
-#if defined(_WIN32) && !defined(LIBFUNC_STATIC)
+#if defined(_WIN32) && !defined(LIBFUNC_STATIC_PLUGINS)
 /** @brief Wrapper for dllexport when needed. */
 #define LIBFUNC_DETAIL_EP_EXPORT __declspec(dllexport)
 #else
