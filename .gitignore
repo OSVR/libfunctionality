@@ -1,6 +1,9 @@
 # Doxygen output
 /doxygen/
 
+# CI build
+/build/
+
 # Compiled Object files
 *.slo
 *.lo
