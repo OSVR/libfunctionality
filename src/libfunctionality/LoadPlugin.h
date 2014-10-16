@@ -36,6 +36,19 @@
 // Standard includes
 #include <string>
 
+#if defined(_WIN32) && !defined(LIBFUNC_STATIC)
+#ifdef functionality_EXPORTS
+// We're building this library
+#define LIBFUNC_API __declspec(dllexport)
+#else
+// We're being included.
+#define LIBFUNC_API __declspec(dllimport)
+#endif
+#else
+// Right now no visibility macros for non-Windows platforms.
+#define LIBFUNC_API
+#endif
+
 /// @brief Main C++ namespace for libfunctionality clients
 namespace libfunc {
 
@@ -51,10 +64,10 @@ namespace libfunc {
     exceptions::CannotLoadEntryPoint,
     exceptions::PluginEntryPointFailed
 */
-void loadPluginByName(const char *n, void *opaque = NULL);
+LIBFUNC_API void loadPluginByName(const char *n, void *opaque = NULL);
 /** @overload
 */
-void loadPluginByName(std::string const &n, void *opaque = NULL);
+LIBFUNC_API void loadPluginByName(std::string const &n, void *opaque = NULL);
 /// @}
 
 } // end of namespace libfunc
