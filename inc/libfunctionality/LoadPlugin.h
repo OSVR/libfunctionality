@@ -28,6 +28,7 @@
 #define INCLUDED_LoadPlugin_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
 
 // Internal Includes
+#include <libfunctionality/Export.h>
 #include <libfunctionality/Exceptions.h>
 
 // Library/third-party includes
@@ -36,24 +37,16 @@
 // Standard includes
 #include <string>
 
-#if defined(_WIN32) && !defined(LIBFUNC_STATIC)
-#ifdef functionality_EXPORTS
-// We're building this library
-#define LIBFUNC_API __declspec(dllexport)
-#else
-// We're being included.
-#define LIBFUNC_API __declspec(dllimport)
-#endif
-#else
-// Right now no visibility macros for non-Windows platforms.
-#define LIBFUNC_API
-#endif
-
 /// @brief Main C++ namespace for libfunctionality clients
 namespace libfunc {
 
-/// @defgroup loadplugin Plugin Loading
-///@{
+/** @defgroup loadplugin Plugin Loading
+
+    @brief C++ interface for applications/client libraries to use to load
+   plugins.
+
+*/
+/// @{
 
 /** @brief Attempts to load a plugin of the given name.
     @param n Plugin name - not a full path! (Can leave off extension as well)
@@ -64,10 +57,10 @@ namespace libfunc {
     exceptions::CannotLoadEntryPoint,
     exceptions::PluginEntryPointFailed
 */
-LIBFUNC_API void loadPluginByName(const char *n, void *opaque = NULL);
-/** @overload
-*/
-LIBFUNC_API void loadPluginByName(std::string const &n, void *opaque = NULL);
+LIBFUNC_EXPORT void loadPluginByName(const char *n, void *opaque = NULL);
+
+/// @overload
+LIBFUNC_EXPORT void loadPluginByName(std::string const &n, void *opaque = NULL);
 /// @}
 
 } // end of namespace libfunc

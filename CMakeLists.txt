@@ -8,7 +8,7 @@ option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this do
 
 include(CTest)
 
-set(LIBFUNCTIONALITY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+set(LIBFUNCTIONALITY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/inc" "${CMAKE_CURRENT_BINARY_DIR}/src")
 set(LIBFUNCTIONALITY_LIBRARIES functionality)
 
 # Set up shared destination directories to avoid Windows hassle with DLL search paths.
