@@ -28,12 +28,52 @@
 #define INCLUDED_LoadPluginWin32_h_GUID_F3039817_F263_43B5_B117_AD894AAF1A83
 
 // Internal Includes
-// - none
+#include "LibraryHandleWin32.h"
 
 // Library/third-party includes
 // - none
 
 // Standard includes
-// - none
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
+namespace libfunc {
+PluginHandle loadPluginByName(const char *n, void *opaque) {
+    if (!n) {
+        throw exceptions::BadPluginName();
+    }
+
+    return loadPluginByName(std::string(n), opaque);
+}
+
+PluginHandle loadPluginByName(std::string const &n, void *opaque) {
+    if (n.empty()) {
+        throw exceptions::BadPluginName();
+    }
+
+    /// @todo support windows rt with this call:
+    /// http://msdn.microsoft.com/en-us/library/windows/desktop/hh447159(v=vs.85).aspx
+
+    LibraryHandle lib(RAIILoadLibrary(n));
+
+    if (!lib) {
+        throw exceptions::CannotLoadPlugin(n);
+    }
+
+    FARPROC raw_ep =
+        GetProcAddress(GetHMODULE(lib), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
+    if (!raw_ep) {
+        throw exceptions::CannotLoadEntryPoint(n);
+    }
+
+    entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
+
+    libfunc_ep_return_t result = (*ep)(opaque);
+    if (result != LIBFUNC_RETURN_SUCCESS) {
+        throw exceptions::PluginEntryPointFailed(n);
+    }
+
+    return PluginHandle(lib);
+}
+} // end of namespace libfunc
 #endif // INCLUDED_LoadPluginWin32_h_GUID_F3039817_F263_43B5_B117_AD894AAF1A83

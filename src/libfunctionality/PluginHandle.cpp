@@ -25,8 +25,7 @@
 // limitations under the License.
 
 // Internal Includes
-#include <libfunctionality/LoadPlugin.h>
-#include <libfunctionality/Common.h>
+#include <libfunctionality/PluginHandle.h>
 
 // Library/third-party includes
 // - none
@@ -34,19 +33,12 @@
 // Standard includes
 // - none
 
-// PLATFORM-INDEPENDENT CODE
 namespace libfunc {
-/// @addtogroup impl
-/// @{
 
-/// @brief Typedef for entry point function. Must be kept in-sync with
-/// LIBFUNC_DETAIL_EP_FUNCTYPE() in Common.h
-typedef libfunc_ep_return_t (*entry_point_t)(void *);
+PluginHandle::PluginHandle(LibraryHandle h) : m_handle(h) {}
 
-/// @}
+PluginHandle::~PluginHandle() {
+    /// Keeps deallocation inside our library.
+}
+
 } // end of namespace libfunc
-
-// PLATFORM_SPECIFIC CODE
-#ifdef _WIN32
-#include "loadPluginWin32.h"
-#endif

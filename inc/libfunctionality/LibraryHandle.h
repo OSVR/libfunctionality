@@ -1,5 +1,5 @@
 /** @file
-    @brief Implementation
+    @brief Header
 
     @date 2014
 
@@ -24,9 +24,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef INCLUDED_LibraryHandle_h_GUID_BA298A3F_BEC8_478B_614C_B9CF1CC086BF
+#define INCLUDED_LibraryHandle_h_GUID_BA298A3F_BEC8_478B_614C_B9CF1CC086BF
+
 // Internal Includes
-#include <libfunctionality/LoadPlugin.h>
-#include <libfunctionality/Common.h>
+#include <libfunctionality/SharedPtr.h>
 
 // Library/third-party includes
 // - none
@@ -34,19 +36,13 @@
 // Standard includes
 // - none
 
-// PLATFORM-INDEPENDENT CODE
 namespace libfunc {
-/// @addtogroup impl
-/// @{
-
-/// @brief Typedef for entry point function. Must be kept in-sync with
-/// LIBFUNC_DETAIL_EP_FUNCTYPE() in Common.h
-typedef libfunc_ep_return_t (*entry_point_t)(void *);
-
-/// @}
+#ifdef _WIN32
+/// @brief RAII container for shared library handle
+typedef shared_ptr<void> LibraryHandle;
+#else
+#error "Not yet implemented"
+#endif
 } // end of namespace libfunc
 
-// PLATFORM_SPECIFIC CODE
-#ifdef _WIN32
-#include "loadPluginWin32.h"
-#endif
+#endif // INCLUDED_LibraryHandle_h_GUID_BA298A3F_BEC8_478B_614C_B9CF1CC086BF

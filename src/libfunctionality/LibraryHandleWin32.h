@@ -28,12 +28,24 @@
 #define INCLUDED_LibraryHandleWin32_h_GUID_767832A3_0B91_43A0_B49F_3818CB69C3A7
 
 // Internal Includes
-// - none
+#include <libfunctionality/LibraryHandle.h>
 
 // Library/third-party includes
 // - none
 
 // Standard includes
-// - none
+#include <string>
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+namespace libfunc {
+LibraryHandle RAIILoadLibrary(std::string const &name);
+
+inline HMODULE GetHMODULE(LibraryHandle const &h) {
+    return static_cast<HMODULE>(h.get());
+}
+
+} // end of namespace libfunc
 
 #endif // INCLUDED_LibraryHandleWin32_h_GUID_767832A3_0B91_43A0_B49F_3818CB69C3A7

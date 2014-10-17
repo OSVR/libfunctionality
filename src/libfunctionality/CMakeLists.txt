@@ -11,12 +11,17 @@ set(HEADER_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/../../inc/libfunctionality")
 set(API
     "${HEADER_LOCATION}/Common.h"
     "${HEADER_LOCATION}/Exceptions.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/Export.h"
+    "${HEADER_LOCATION}/LibraryHandle.h"
     "${HEADER_LOCATION}/LoadPlugin.h"
     "${HEADER_LOCATION}/PluginInterface.h"
     "${HEADER_LOCATION}/PluginHandle.h"
     "${HEADER_LOCATION}/SharedPtr.h")
 
-set(SOURCE Export.h.in LoadPlugin.cpp)
+set(SOURCE
+    Export.h.in
+    LoadPlugin.cpp
+    PluginHandle.cpp)
 
 if(WIN32)
     list(APPEND SOURCE

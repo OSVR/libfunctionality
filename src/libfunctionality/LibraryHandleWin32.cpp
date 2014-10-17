@@ -31,4 +31,18 @@
 // - none
 
 // Standard includes
-// - none
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+namespace libfunc {
+
+static void LibraryFreer(void *handle) {
+    FreeLibrary(static_cast<HMODULE>(handle));
+}
+
+LibraryHandle RAIILoadLibrary(std::string const &name) {
+    return LibraryHandle(static_cast<void *>(LoadLibrary(name.c_str())),
+                         &LibraryFreer);
+}
+
+} // end of namespace libfunc

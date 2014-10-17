@@ -30,6 +30,7 @@
 // Internal Includes
 #include <libfunctionality/Export.h>
 #include <libfunctionality/Exceptions.h>
+#include <libfunctionality/PluginHandle.h>
 
 // Library/third-party includes
 // - none
@@ -49,18 +50,24 @@ namespace libfunc {
 /// @{
 
 /** @brief Attempts to load a plugin of the given name.
+
     @param n Plugin name - not a full path! (Can leave off extension as well)
     @param opaque Optional, opaque pointer to data. Both your app and the plugin
     have to agree on what this means.
+
+    @returns an object you must keep alive as long as you want the plugin to
+    stay loaded.
 
     @throws exceptions::BadPluginName, exceptions::CannotLoadPlugin,
     exceptions::CannotLoadEntryPoint,
     exceptions::PluginEntryPointFailed
 */
-LIBFUNC_EXPORT void loadPluginByName(const char *n, void *opaque = NULL);
+LIBFUNC_EXPORT PluginHandle
+    loadPluginByName(const char *n, void *opaque = NULL);
 
 /// @overload
-LIBFUNC_EXPORT void loadPluginByName(std::string const &n, void *opaque = NULL);
+LIBFUNC_EXPORT PluginHandle
+    loadPluginByName(std::string const &n, void *opaque = NULL);
 /// @}
 
 } // end of namespace libfunc

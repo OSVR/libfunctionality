@@ -28,7 +28,8 @@
 #define INCLUDED_PluginHandle_h_GUID_22BAD46F_64EB_4C8C_553D_EC995C88DF6B
 
 // Internal Includes
-// - none
+#include <libfunctionality/Export.h>
+#include <libfunctionality/LibraryHandle.h>
 
 // Library/third-party includes
 // - none
@@ -36,4 +37,21 @@
 // Standard includes
 // - none
 
+namespace libfunc {
+
+/// @brief A wrapper around whatever needs to stay alive to keep a plugin
+/// loaded, handling unloading in RAII fashion.
+class PluginHandle {
+  public:
+    /// @brief Constructor
+    LIBFUNC_EXPORT PluginHandle(LibraryHandle h);
+
+    /// @brief Destructor
+    LIBFUNC_EXPORT ~PluginHandle();
+
+  private:
+    LibraryHandle m_handle;
+};
+
+} // end of namespace libfunc
 #endif // INCLUDED_PluginHandle_h_GUID_22BAD46F_64EB_4C8C_553D_EC995C88DF6B
