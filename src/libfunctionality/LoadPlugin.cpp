@@ -25,8 +25,8 @@
 // limitations under the License.
 
 // Internal Includes
-#include "LoadPlugin.h"
-#include "Common.h"
+#include <libfunctionality/LoadPlugin.h>
+#include <libfunctionality/Common.h>
 
 // Library/third-party includes
 // - none
