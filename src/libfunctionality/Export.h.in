@@ -1,6 +1,8 @@
 /** @file
     @brief Auto-configured header
 
+    Must be c-safe!
+
     @date 2014
 
     @author
@@ -10,6 +12,7 @@
 
 */
 
+/*
 // Copyright 2014 Sensics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +26,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+*/
 
 #ifndef INCLUDED_Export_h_GUID_3447EBED_3DF2_49BC_51CB_8C226B46DD6A
 #define INCLUDED_Export_h_GUID_3447EBED_3DF2_49BC_51CB_8C226B46DD6A
@@ -31,15 +35,15 @@
 
 #if defined(_WIN32) && !defined(LIBFUNC_STATIC)
 #ifdef functionality_EXPORTS
-// We're building this library
+/* We're building this library. */
 #define LIBFUNC_EXPORT __declspec(dllexport)
 #else
-// We're being included.
+/* We're being included. */
 #define LIBFUNC_EXPORT __declspec(dllimport)
 #endif
 #else
-// Right now no visibility macros for non-Windows platforms.
+/* Right now no visibility macros for non-Windows platforms. */
 #define LIBFUNC_EXPORT
 #endif
 
-#endif // INCLUDED_Export_h_GUID_3447EBED_3DF2_49BC_51CB_8C226B46DD6A
+#endif
