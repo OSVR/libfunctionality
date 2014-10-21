@@ -1,5 +1,8 @@
 include_directories(${LIBFUNCTIONALITY_INCLUDE_DIRS})
 
+# TODO look into generate_export_header(ClimbingStats)
+
+
 if(BUILD_SHARED_LIBS)
     set(LIBFUNC_STATIC FALSE)
 else()
@@ -31,3 +34,25 @@ if(WIN32)
 endif()
 
 add_library(functionality ${API} ${SOURCE})
+set_property(TARGET functionality PROPERTY VERSION ${libfunctionality_VERSION})
+set_property(TARGET functionality PROPERTY SOVERSION 0)
+set_property(TARGET functionality PROPERTY INTERFACE_libfunctionality_MAJOR_VERSION 0)
+set_property(TARGET functionality APPEND PROPERTY
+    COMPATIBLE_INTERFACE_STRING libfunctionality_MAJOR_VERSION
+)
+
+
+install(TARGETS functionality EXPORT libfunctionalityTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(
+    FILES
+    ${API}
+    DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/libfunctionality
+    COMPONENT
+    Devel
+)
