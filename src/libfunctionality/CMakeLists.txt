@@ -31,7 +31,3 @@ if(WIN32)
 endif()
 
 add_library(functionality ${API} ${SOURCE})
-
-if(NOT BUILD_SHARED_LIBS)
-    target_compile_definitions(functionality PUBLIC LIBFUNC_STATIC)
-endif()
