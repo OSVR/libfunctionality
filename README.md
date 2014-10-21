@@ -22,8 +22,9 @@ easier.) If you've got a non-Express version of Visual Studio, you might
 also want the clang-format plugin. In either case, there are a pair of 
 scripts in `/devtools/`: 
 
-- `format-project.cmd` runs `clang-format` in place using wildcards to 
-    hopefully grab every file. 
+- `format-project.sh` runs `clang-format` in place using unix `find` to 
+    hopefully grab every file. Windows users need Git for Windows installed
+    and handling `.sh` files to run this. (A default install will do that, IIRC)
 
 - `format-file.cmd` runs `clang-format` in place on whatever file or 
     files you drop on it - useful if you want some other code to also look 
