@@ -34,21 +34,30 @@
 // - none
 
 TEST(load_dummy_plugin_with_param, cstr_name_null_data) {
-    ASSERT_THROW((libfunc::loadPluginByName("DummyPluginWithParam", NULL)), libfunc::exceptions::PluginEntryPointFailed) << "Plugin requires data.";
+    ASSERT_THROW((libfunc::loadPluginByName("DummyPluginWithParam", NULL)),
+                 libfunc::exceptions::PluginEntryPointFailed)
+        << "Plugin requires data.";
 }
 
 TEST(load_dummy_plugin_with_param, string_name_null_data) {
-	ASSERT_THROW(( libfunc::loadPluginByName(std::string("DummyPluginWithParam"), NULL)), libfunc::exceptions::PluginEntryPointFailed) << "Plugin requires data.";
+    ASSERT_THROW(
+        (libfunc::loadPluginByName(std::string("DummyPluginWithParam"), NULL)),
+        libfunc::exceptions::PluginEntryPointFailed)
+        << "Plugin requires data.";
 }
 
 TEST(load_dummy_plugin_with_param, cstr_name_no_data) {
-	ASSERT_THROW((libfunc::loadPluginByName("DummyPluginWithParam")), libfunc::exceptions::PluginEntryPointFailed) << "Plugin requires data.";
+    ASSERT_THROW((libfunc::loadPluginByName("DummyPluginWithParam")),
+                 libfunc::exceptions::PluginEntryPointFailed)
+        << "Plugin requires data.";
 }
 
 TEST(load_dummy_plugin_with_param, string_name_no_data) {
-	ASSERT_THROW((libfunc::loadPluginByName(std::string("DummyPluginWithParam"))), libfunc::exceptions::PluginEntryPointFailed) << "Plugin requires data.";
+    ASSERT_THROW(
+        (libfunc::loadPluginByName(std::string("DummyPluginWithParam"))),
+        libfunc::exceptions::PluginEntryPointFailed)
+        << "Plugin requires data.";
 }
-
 
 const int orignum = 5;
 
@@ -60,6 +69,7 @@ TEST(load_dummy_plugin_with_param, cstr_name_int_data) {
 
 TEST(load_dummy_plugin_with_param, string_name_int_data) {
     int num = orignum;
-    ASSERT_NO_THROW((libfunc::loadPluginByName(std::string("DummyPluginWithParam"), &num)));
+    ASSERT_NO_THROW(
+        (libfunc::loadPluginByName(std::string("DummyPluginWithParam"), &num)));
     ASSERT_EQ(orignum + 1, num);
 }
