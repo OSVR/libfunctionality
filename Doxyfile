@@ -40,9 +40,9 @@ OUTPUT_DIRECTORY       = doxygen
 # will be relative from the directory where doxygen is started.
 # This tag requires that the tag FULL_PATH_NAMES is set to YES.
 
-# For config item STRIP_FROM_PATH, default is 
 STRIP_FROM_PATH        =  \
-                         src
+                         src \
+                         inc
 
 # The STRIP_FROM_INC_PATH tag can be used to strip a user-defined part of the
 # path mentioned in the documentation of a class, which tells the reader which
@@ -52,7 +52,8 @@ STRIP_FROM_PATH        =  \
 # using the -I flag.
 
 # For config item STRIP_FROM_INC_PATH, default is 
-STRIP_FROM_INC_PATH    = src
+STRIP_FROM_INC_PATH    = src inc
+
 # If you use STL classes (i.e. std::string, std::vector, etc.) but do not want
 # to include (a tag file for) the STL sources as input, then you should set this
 # tag to YES in order to let doxygen match functions declarations and
