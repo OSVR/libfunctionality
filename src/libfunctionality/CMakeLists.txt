@@ -1,4 +1,3 @@
-include_directories(${LIBFUNCTIONALITY_INCLUDE_DIRS})
 
 # TODO look into generate_export_header(ClimbingStats)
 
@@ -40,6 +39,11 @@ set_property(TARGET functionality PROPERTY INTERFACE_libfunctionality_MAJOR_VERS
 set_property(TARGET functionality APPEND PROPERTY
     COMPATIBLE_INTERFACE_STRING libfunctionality_MAJOR_VERSION
 )
+target_include_directories(functionality
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
+    $<BUILD_INTERFACE:${INCLUDE_BASE}>
+    $<INSTALL_INTERFACE:include>)
 
 
 install(TARGETS functionality EXPORT libfunctionalityTargets

@@ -3,17 +3,23 @@ project(libfunctionality)
 
 set(libfunctionality_VERSION 0.1)
 
+###
+# Configuration Options
+###
+option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this doesn't affect whether we can load shared libraries." ON)
+
+###
+# CMake Modules
+###
 # Custom CMake modules from https://github.com/rpavlik/cmake-modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this doesn't affect whether we can load shared libraries." ON)
 
 include(CTest)
 include(GNUInstallDirs)
 
-set(LIBFUNCTIONALITY_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/inc" "${CMAKE_CURRENT_BINARY_DIR}/src")
-set(LIBFUNCTIONALITY_LIBRARIES functionality)
-
+###
+# Set up build directories
+###
 # Set up shared destination directories to avoid Windows hassle with DLL search paths.
 set(EXECUTABLE_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}")
 if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
@@ -30,6 +36,10 @@ if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EXECUTABLE_BINARY_DIR}")
 endif()
 
+###
+# Building
+###
+set(INCLUDE_BASE "${CMAKE_CURRENT_SOURCE_DIR}/inc")
 add_subdirectory(src/libfunctionality)
 if(BUILD_TESTING)
 	if(WIN32)
@@ -42,7 +52,9 @@ endif()
 include(DoxygenTargets)
 add_doxygen("${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile" NO_PDF)
 
-
+###
+# Set Up Package for External Usage
+###
 include(CMakePackageConfigHelpers)
 
 set(BUILD_CONFIG_BASE "${CMAKE_CURRENT_BINARY_DIR}/libfunctionality/libfunctionality")
