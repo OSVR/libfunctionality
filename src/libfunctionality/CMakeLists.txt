@@ -32,6 +32,19 @@ if(WIN32)
         LoadPluginWin32.h)
 endif()
 
+###
+# "Interface" target for plugins to use - they don't need to link, just need the includes.
+###
+add_library(functionality-plugininterface INTERFACE)
+target_include_directories(functionality-plugininterface
+    INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
+    $<BUILD_INTERFACE:${INCLUDE_BASE}>
+    $<INSTALL_INTERFACE:include>)
+
+###
+# Main library - used by code wanting to load plugins.
+###
 add_library(functionality ${API} ${SOURCE})
 set_property(TARGET functionality PROPERTY VERSION ${libfunctionality_VERSION})
 set_property(TARGET functionality PROPERTY SOVERSION 0)
@@ -39,24 +52,27 @@ set_property(TARGET functionality PROPERTY INTERFACE_libfunctionality_MAJOR_VERS
 set_property(TARGET functionality APPEND PROPERTY
     COMPATIBLE_INTERFACE_STRING libfunctionality_MAJOR_VERSION
 )
+
 target_include_directories(functionality
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
     $<BUILD_INTERFACE:${INCLUDE_BASE}>
     $<INSTALL_INTERFACE:include>)
 
-
-install(TARGETS functionality EXPORT libfunctionalityTargets
+###
+# Install library and headers
+###
+install(TARGETS functionality functionality-plugininterface
+    EXPORT libfunctionalityTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 install(
     FILES
     ${API}
     DESTINATION
     ${CMAKE_INSTALL_INCLUDEDIR}/libfunctionality
     COMPONENT
-    Devel
-)
+    Devel)
