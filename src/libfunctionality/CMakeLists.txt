@@ -13,16 +13,33 @@ configure_file(Export.h.in "${CMAKE_CURRENT_BINARY_DIR}/Export.h")
 ###
 # Set up dynamic loading facility header
 ###
-set(LIBFUNC_DL_SUPPORT ${BUILD_WITH_DYNAMIC_SUPPORT})
-if(LIBFUNC_DL_SUPPORT)
+if(BUILD_WITH_DYNAMIC_SUPPORT)
     if(WIN32)
         set(LIBFUNC_DL_WIN32 TRUE)
+        set(LIBFUNC_DL_SUPPORT TRUE)
     else()
-
+        # Look for POSIX dlfcn/libdl stuff.
+        include(CheckSymbolExists)
+        set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_DL_LIBS})
+        check_symbol_exists(dlopen dlfcn.h LIBFUNC_HAS_DLOPEN)
+        check_symbol_exists(dlsym dlfcn.h LIBFUNC_HAS_DLSYM)
+        check_symbol_exists(dlerror dlfcn.h LIBFUNC_HAS_DLERROR)
+        check_symbol_exists(dlclose dlfcn.h LIBFUNC_HAS_DLCLOSE)
+        check_symbol_exists(RTLD_LAZY dlfcn.h LIBFUNC_HAS_RTLD_LAZY)
+        if(LIBFUNC_HAS_DLOPEN AND LIBFUNC_HAS_DLSYM AND LIBFUNC_HAS_DLERROR AND LIBFUNC_HAS_DLCLOSE AND LIBFUNC_HAS_RTLD_LAZY)
+            set(LIBFUNC_DL_LIBDL TRUE)
+            set(LIBFUNC_DL_SUPPORT TRUE)
+        endif()
+    endif()
+    if(NOT LIBFUNC_DL_SUPPORT)
+        message(FATAL_ERROR "Could not find a supported method of dynamic library loading for your platform!")
     endif()
 endif()
 configure_file(DynamicLoadConfig.h.in "${CMAKE_CURRENT_BINARY_DIR}/DynamicLoadConfig.h")
 
+###
+# Do the build
+###
 set(HEADER_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/../../inc/libfunctionality")
 set(API
     "${HEADER_LOCATION}/Common.h"
