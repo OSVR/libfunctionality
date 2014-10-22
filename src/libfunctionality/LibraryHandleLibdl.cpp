@@ -4,9 +4,9 @@
     @date 2014
 
     @author
-    Ryan Pavlik
-    <ryan@sensics.com>
-    <http://sensics.com>
+Ryan Pavlik
+<ryan@sensics.com>
+<http://sensics.com>
 
 */
 
@@ -16,7 +16,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// 	http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,37 +25,21 @@
 // limitations under the License.
 
 // Internal Includes
-#include <libfunctionality/LoadPlugin.h>
-#include <libfunctionality/Common.h>
-#include <libfunctionality/DynamicLoadConfig.h>
+#include "LibraryHandleLibdl.h"
 
 // Library/third-party includes
 // - none
 
 // Standard includes
-// - none
+#include <dlfcn.h>
 
-// PLATFORM-INDEPENDENT CODE
 namespace libfunc {
-/// @addtogroup impl
-/// @{
 
-/// @brief Typedef for entry point function. Must be kept in-sync with
-/// LIBFUNC_DETAIL_EP_FUNCTYPE() in Common.h
-typedef libfunc_ep_return_t (*entry_point_t)(void *);
+static void DLCloser(void *handle) { dlclose(handle); }
 
-/// @}
+LibraryHandle RAIILoadLibrary(std::string const &name) {
+    std::string withSO = name + ".so";
+    return LibraryHandle(dlopen(withSO.c_str(), RTLD_LAZY), &DLCloser);
+}
+
 } // end of namespace libfunc
-
-// PLATFORM_SPECIFIC CODE
-#ifdef LIBFUNC_DL_SUPPORT
-
-#ifdef LIBFUNC_DL_WIN32
-#include "loadPluginWin32.h"
-#endif
-
-#ifdef LIBFUNC_DL_LIBDL
-#include "loadPluginLibdl.h"
-#endif
-
-#endif
