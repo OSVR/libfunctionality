@@ -41,7 +41,8 @@
 /* none */
 
 /** @def LIBFUNC_DL_SUPPORT
-    @brief Defined when the library was compiled with dynamically-loading plugin support.
+    @brief Defined when the library was compiled with dynamically-loading plugin
+   support.
 */
 #cmakedefine LIBFUNC_DL_SUPPORT
 

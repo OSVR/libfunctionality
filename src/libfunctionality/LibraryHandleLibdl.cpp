@@ -4,9 +4,9 @@
     @date 2014
 
     @author
-Ryan Pavlik
-<ryan@sensics.com>
-<http://sensics.com>
+    Ryan Pavlik
+    <ryan@sensics.com>
+    <http://sensics.com>
 
 */
 
@@ -26,6 +26,7 @@ Ryan Pavlik
 
 // Internal Includes
 #include "LibraryHandleLibdl.h"
+#include <libfunctionality/DynamicLoadConfig.h>
 
 // Library/third-party includes
 // - none
@@ -38,7 +39,9 @@ namespace libfunc {
 static void DLCloser(void *handle) { dlclose(handle); }
 
 LibraryHandle RAIILoadLibrary(std::string const &name) {
-    std::string withSO = name + ".so";
+    std::string withSO =
+        name +
+        LIBFUNC_MODULE_SUFFIX; ///< @todo does appending the suffix belong here?
     return LibraryHandle(dlopen(withSO.c_str(), RTLD_LAZY), &DLCloser);
 }
 
