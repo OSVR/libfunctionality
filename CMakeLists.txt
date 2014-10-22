@@ -7,6 +7,11 @@ set(libfunctionality_VERSION 0.1)
 # Configuration Options
 ###
 option(BUILD_SHARED_LIBS "Should we build as a shared library? Note that this doesn't affect whether we can load shared libraries." ON)
+option(BUILD_WITH_DYNAMIC_SUPPORT "Should we support dynamically-loaded plugins? Note that this is the only implemented mode right now" ON)
+
+if(NOT BUILD_WITH_DYNAMIC_SUPPORT)
+    message(FATAL_ERROR "Dynamically-loaded plugin support is presently the only support implemented!")
+endif()
 
 ###
 # CMake Modules

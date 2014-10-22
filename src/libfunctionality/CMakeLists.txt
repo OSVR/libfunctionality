@@ -1,7 +1,8 @@
 
-# TODO look into generate_export_header(ClimbingStats)
-
-
+###
+# Set up export header
+###
+# TODO look into generate_export_header()
 if(BUILD_SHARED_LIBS)
     set(LIBFUNC_STATIC FALSE)
 else()
@@ -9,9 +10,23 @@ else()
 endif()
 configure_file(Export.h.in "${CMAKE_CURRENT_BINARY_DIR}/Export.h")
 
+###
+# Set up dynamic loading facility header
+###
+set(LIBFUNC_DL_SUPPORT ${BUILD_WITH_DYNAMIC_SUPPORT})
+if(LIBFUNC_DL_SUPPORT)
+    if(WIN32)
+        set(LIBFUNC_DL_WIN32 TRUE)
+    else()
+
+    endif()
+endif()
+configure_file(DynamicLoadConfig.h.in "${CMAKE_CURRENT_BINARY_DIR}/DynamicLoadConfig.h")
+
 set(HEADER_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/../../inc/libfunctionality")
 set(API
     "${HEADER_LOCATION}/Common.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/DynamicLoadConfig.h"
     "${HEADER_LOCATION}/Exceptions.h"
     "${CMAKE_CURRENT_BINARY_DIR}/Export.h"
     "${HEADER_LOCATION}/LibraryHandle.h"
@@ -21,15 +36,22 @@ set(API
     "${HEADER_LOCATION}/SharedPtr.h")
 
 set(SOURCE
+    DynamicLoadConfig.h.in
     Export.h.in
     LoadPlugin.cpp
     PluginHandle.cpp)
 
-if(WIN32)
+if(LIBFUNC_DL_WIN32)
     list(APPEND SOURCE
         LibraryHandleWin32.cpp
         LibraryHandleWin32.h
         LoadPluginWin32.h)
+endif()
+if(LIBFUNC_DL_LIBDL)
+    list(APPEND SOURCE
+        LibraryHandleLibdl.cpp
+        LibraryHandleLibdl.h
+        LoadPluginLibdl.h)
 endif()
 
 ###
@@ -58,6 +80,10 @@ target_include_directories(functionality
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
     $<BUILD_INTERFACE:${INCLUDE_BASE}>
     $<INSTALL_INTERFACE:include>)
+
+if(BUILD_WITH_DYNAMIC_SUPPORT)
+    target_link_libraries(functionality PUBLIC ${CMAKE_DL_LIBS})
+endif()
 
 ###
 # Install library and headers
