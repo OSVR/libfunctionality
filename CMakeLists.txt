@@ -71,7 +71,7 @@ export(EXPORT libfunctionalityTargets
 
 configure_file(libfunctionalityConfig.cmake
     "${BUILD_CONFIG_BASE}Config.cmake"
-    COPY_ONLY)
+    COPYONLY)
 
 install(EXPORT libfunctionalityTargets
     FILE
