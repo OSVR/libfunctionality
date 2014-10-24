@@ -58,6 +58,10 @@ namespace exceptions {
         /// @brief Constructor
         explicit CannotLoadPlugin(std::string const &n)
             : std::runtime_error("Failed to load the module " + n) {}
+        /// @brief Constructor
+        CannotLoadPlugin(std::string const &n, const char *info)
+            : std::runtime_error("Failed to load the module " + n +
+                                 " with error: " + info) {}
     };
 
     /// @brief Exception thrown when loading the symbol for the entry point
