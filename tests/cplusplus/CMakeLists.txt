@@ -1,9 +1,9 @@
-
-add_library(DummyPlugin MODULE DummyPlugin.cpp)
-target_link_libraries(DummyPlugin functionality-plugininterface)
-
-add_library(DummyPluginWithParam MODULE DummyPluginWithParam.cpp)
-target_link_libraries(DummyPluginWithParam functionality-plugininterface)
+foreach(NAME DummyPlugin DummyPluginWithParam)
+    add_library(${NAME} MODULE ${NAME}.cpp)
+    set_target_properties(${NAME}
+        PROPERTIES PREFIX "")
+    target_link_libraries(${NAME} functionality-plugininterface)
+endforeach()
 
 add_executable(ExampleLoadTest ExampleLoadTest.cpp)
 target_link_libraries(ExampleLoadTest functionality)
