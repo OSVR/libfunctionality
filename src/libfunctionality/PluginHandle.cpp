@@ -34,6 +34,7 @@
 // - none
 
 namespace libfunc {
+PluginHandle::PluginHandle() {}
 
 PluginHandle::PluginHandle(LibraryHandle h) : m_handle(h) {}
 

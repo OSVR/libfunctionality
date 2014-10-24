@@ -46,6 +46,10 @@ class PluginHandle {
     /// @brief Constructor
     LIBFUNC_EXPORT PluginHandle(LibraryHandle h);
 
+    /// @brief Default constructor, for assuming ownership of a plugin after
+    /// creation of this object.
+    LIBFUNC_EXPORT PluginHandle();
+
     /// @brief Destructor
     LIBFUNC_EXPORT ~PluginHandle();
 
