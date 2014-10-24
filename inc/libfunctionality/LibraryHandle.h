@@ -29,6 +29,7 @@
 
 // Internal Includes
 #include <libfunctionality/SharedPtr.h>
+#include <libfunctionality/DynamicLoadConfig.h>
 
 // Library/third-party includes
 // - none
@@ -37,7 +38,8 @@
 // - none
 
 namespace libfunc {
-#ifdef _WIN32
+
+#if defined(LIBFUNC_DL_WIN32) || defined(LIBFUNC_DL_LIBDL)
 /// @brief RAII container for shared library handle
 typedef shared_ptr<void> LibraryHandle;
 #else
