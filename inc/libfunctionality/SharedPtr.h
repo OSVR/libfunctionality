@@ -43,7 +43,9 @@ namespace libfunc {
 using std::tr1::shared_ptr;
 } // end of namespace libfunc
 #else
+namespace libfunc {
 using std::shared_ptr;
+} // end of namespace libfunc
 #endif
 
 #endif // INCLUDED_SharedPtr_h_GUID_5797F717_896A_4E97_017B_EAC89BD7C17B
