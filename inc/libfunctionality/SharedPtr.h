@@ -36,10 +36,14 @@
 // Standard includes
 #include <memory>
 
-/// @todo handle shared_ptr out of TR1
-
+#if defined(__GLIBCXX__) && __cplusplus == 199711L &&                          \
+    !defined(__GXX_EXPERIMENTAL_CXX0X__)
+#include <tr1/memory>
 namespace libfunc {
-using std::shared_ptr;
+using std::tr1::shared_ptr;
 } // end of namespace libfunc
+#else
+using std::shared_ptr;
+#endif
 
 #endif // INCLUDED_SharedPtr_h_GUID_5797F717_896A_4E97_017B_EAC89BD7C17B
