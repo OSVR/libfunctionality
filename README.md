@@ -5,7 +5,9 @@ A minimal library for dynamically-loaded or statically-linked
 functionality modules, which we call **plugins**. What you do with them
 and how you interact with them is your business. How you load them is ours.
 
-License: Apache 2.0
+Copyright 2014 Sensics, Inc. All rights reserved.
+
+Intended to be released under the Apache License, Version 2.0.
 
 Hacking
 -------
