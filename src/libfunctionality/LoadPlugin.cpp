@@ -51,11 +51,11 @@ typedef libfunc_ep_return_t (*entry_point_t)(void *);
 #ifdef LIBFUNC_DL_SUPPORT
 
 #ifdef LIBFUNC_DL_WIN32
-#include "loadPluginWin32.h"
+#include "LoadPluginWin32.h"
 #endif
 
 #ifdef LIBFUNC_DL_LIBDL
-#include "loadPluginLibdl.h"
+#include "LoadPluginLibdl.h"
 #endif
 
 #endif
