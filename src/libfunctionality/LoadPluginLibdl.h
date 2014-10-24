@@ -50,22 +50,37 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
         throw exceptions::BadPluginName();
     }
 
-    /// @todo support windows rt with this call:
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/hh447159(v=vs.85).aspx
-
-    LibraryHandle lib(RAIILoadLibrary(n));
+    LibraryHandle lib(RAIILoadLibrary(n + LIBFUNC_MODULE_SUFFIX));
 
     if (!lib) {
         throw exceptions::CannotLoadPlugin(n);
     }
 
     // Appropriate, but odd, syntax per the dlopen(3) man page.
+    // and
+    // http://stackoverflow.com/questions/1354537/dlsym-dlopen-with-runtime-arguments
     dlerror(); // clear errors
-    *(void **)(&ep) = dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
-    if (dlerror() != NULL) {
+
+/// @todo Pick one of these two implementations - one is more C and
+/// Posix-recommended,
+/// the other is simpler C++.
+#if 1
+    typedef void *(*DlsymReturn)();
+    DlsymReturn raw_ep;
+    *(void **)(&raw_ep) =
+        dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
+    if (dlerror() != NULL || raw_ep == NULL) {
         throw exceptions::CannotLoadEntryPoint(n);
     }
+    entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
+#else
+    entry_point_t ep = reinterpret_cast<entry_point_t>(
+        dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING));
+#endif
 
+    if (dlerror() != NULL || ep == NULL) {
+        throw exceptions::CannotLoadEntryPoint(n);
+    }
     libfunc_ep_return_t result = (*ep)(opaque);
     if (result != LIBFUNC_RETURN_SUCCESS) {
         throw exceptions::PluginEntryPointFailed(n);

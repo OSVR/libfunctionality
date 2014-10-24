@@ -27,6 +27,7 @@
 // Internal Includes
 #include "LibraryHandleLibdl.h"
 #include <libfunctionality/DynamicLoadConfig.h>
+#include <libfunctionality/Exceptions.h>
 
 // Library/third-party includes
 // - none
@@ -36,13 +37,19 @@
 
 namespace libfunc {
 
-static void DLCloser(void *handle) { dlclose(handle); }
+static void DLCloser(void *handle) {
+    if (handle) {
+        dlclose(handle);
+    }
+}
 
 LibraryHandle RAIILoadLibrary(std::string const &name) {
-    std::string withSO =
-        name +
-        LIBFUNC_MODULE_SUFFIX; ///< @todo does appending the suffix belong here?
-    return LibraryHandle(dlopen(withSO.c_str(), RTLD_LAZY), &DLCloser);
+    dlerror();
+    void *lib = dlopen(name.c_str(), RTLD_NOW);
+    if (!lib) {
+        throw exceptions::CannotLoadPlugin(name, dlerror());
+    }
+    return LibraryHandle(lib, &DLCloser);
 }
 
 } // end of namespace libfunc
