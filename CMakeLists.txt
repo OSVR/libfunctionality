@@ -50,7 +50,13 @@ endif()
 # Building
 ###
 set(INCLUDE_BASE "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+if(WIN32)
+    set(CMAKE_DEBUG_POSTFIX "d")
+endif()
 add_subdirectory(src/libfunctionality)
+if(WIN32)
+    set(CMAKE_DEBUG_POSTFIX "")
+endif()
 if(BUILD_TESTING)
 	if(WIN32)
 		set(gtest_force_shared_crt ON)
