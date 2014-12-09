@@ -22,7 +22,11 @@
 
 // Internal Includes
 #include <libfunctionality/SharedPtr.h>
+#if !defined(__ANDROID__)
 #include <libfunctionality/DynamicLoadConfig.h>
+#else 
+#define LIBFUNC_DL_LIBDL
+#endif
 
 // Library/third-party includes
 // - none
