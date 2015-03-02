@@ -75,21 +75,20 @@ add_doxygen("${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile" NO_PDF)
 # Set Up Package for External Usage
 ###
 include(CMakePackageConfigHelpers)
-
-set(BUILD_CONFIG_BASE "${CMAKE_CURRENT_BINARY_DIR}/libfunctionality/libfunctionality")
 set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/libfunctionality")
 
 write_basic_package_version_file(
-    "${BUILD_CONFIG_BASE}ConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/libfunctionalityConfigVersion.cmake"
     VERSION ${libfunctionality_VERSION}
     COMPATIBILITY AnyNewerVersion)
 
 export(EXPORT libfunctionalityTargets
-    FILE "${BUILD_CONFIG_BASE}Targets.cmake"
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/libfunctionalityTargets.cmake"
     NAMESPACE libfunctionality::)
+export(PACKAGE libfunctionality)
 
 configure_file(libfunctionalityConfig.cmake
-    "${BUILD_CONFIG_BASE}Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/libfunctionalityConfig.cmake"
     COPYONLY)
 
 install(EXPORT libfunctionalityTargets
@@ -98,12 +97,11 @@ install(EXPORT libfunctionalityTargets
     NAMESPACE
     libfunctionality::
     DESTINATION
-    ${CONFIG_INSTALL_DIR}
-)
-install(
-    FILES
+    ${CONFIG_INSTALL_DIR})
+
+install(FILES
     libfunctionalityConfig.cmake
-    "${BUILD_CONFIG_BASE}ConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/libfunctionalityConfigVersion.cmake"
     DESTINATION
     ${CONFIG_INSTALL_DIR}
     COMPONENT
