@@ -21,6 +21,9 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(CTest)
 include(GNUInstallDirs)
+if(NOT CMAKE_INSTALL_DOCDIR)
+	set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME})
+endif()
 
 ###
 # Set up build directories
@@ -68,9 +71,36 @@ if(BUILD_TESTING)
 	add_subdirectory(tests)
 endif()
 
+###
+# Build and install documentation
+###
 include(DoxygenTargets)
 add_doxygen("${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile" NO_PDF)
 
+if(WIN32)
+    set(README_DEST .)
+else()
+    set(README_DEST "${CMAKE_INSTALL_DOCDIR}")
+endif()
+
+# For generating documentation in HTML
+find_package(Markdown)
+
+set(README_MARKDOWN
+    README.md
+    CONTRIBUTING.md)
+if(MARKDOWN_FOUND)
+    include(UseMarkdown)
+    add_markdown_target(markdown-readme ${CMAKE_CURRENT_BINARY_DIR} ${README_MARKDOWN})
+    install_markdown_target(markdown-readme DESTINATION "${README_DEST}" COMPONENT Runtime)
+else()
+    install(FILES ${README_MARKDOWN}
+        DESTINATION "${README_DEST}"
+        COMPONENT Runtime)
+endif()
+install(FILES LICENSE NOTICE
+    DESTINATION "${README_DEST}"
+    COMPONENT Runtime)
 ###
 # Set Up Package for External Usage
 ###
