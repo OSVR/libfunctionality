@@ -1,15 +1,3 @@
-
-###
-# Set up export header
-###
-# TODO look into generate_export_header()
-if(BUILD_SHARED_LIBS)
-    set(LIBFUNC_STATIC FALSE)
-else()
-    set(LIBFUNC_STATIC TRUE)
-endif()
-configure_file(Export.h.in "${CMAKE_CURRENT_BINARY_DIR}/Export.h")
-
 ###
 # Set up dynamic loading facility header
 ###
@@ -100,6 +88,17 @@ target_include_directories(functionality
 
 if(BUILD_WITH_DYNAMIC_SUPPORT)
     target_link_libraries(functionality PUBLIC ${CMAKE_DL_LIBS})
+endif()
+
+###
+# Generate export header
+###
+include(GenerateExportHeader)
+generate_export_header(functionality
+    BASE_NAME LIBFUNC
+    EXPORT_FILE_NAME Export.h)
+if(NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(functionality PUBLIC LIBFUNC_STATIC_DEFINE)
 endif()
 
 ###
