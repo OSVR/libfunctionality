@@ -27,7 +27,13 @@
 // Internal Includes
 #include <libfunctionality/LoadPlugin.h>
 #include <libfunctionality/Common.h>
+#if !defined(__ANDROID__)
 #include <libfunctionality/DynamicLoadConfig.h>
+#else 
+#define LIBFUNC_DL_SUPPORT
+#define LIBFUNC_DL_LIBDL
+#define LIBFUNC_MODULE_SUFFIX ".so"
+#endif
 
 // Library/third-party includes
 // - none

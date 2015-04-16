@@ -28,7 +28,12 @@
 #define INCLUDED_LoadPlugin_h_GUID_E670D44C_A770_4D8D_958C_8246022512F4
 
 // Internal Includes
+#if !defined(__ANDROID__)
 #include <libfunctionality/Export.h>
+#else 
+#define LIBFUNC_EXPORT
+#endif
+
 #include <libfunctionality/Exceptions.h>
 #include <libfunctionality/PluginHandle.h>
 

@@ -26,8 +26,12 @@
 
 // Internal Includes
 #include "LibraryHandleLibdl.h"
+
+#if !defined(__ANDROID__)
 #include <libfunctionality/DynamicLoadConfig.h>
+#endif
 #include <libfunctionality/Exceptions.h>
+
 
 // Library/third-party includes
 // - none

@@ -28,7 +28,12 @@
 #define INCLUDED_PluginHandle_h_GUID_22BAD46F_64EB_4C8C_553D_EC995C88DF6B
 
 // Internal Includes
+#if !defined(__ANDROID__)
 #include <libfunctionality/Export.h>
+#else
+#define LIBFUNC_EXPORT
+#endif
+
 #include <libfunctionality/LibraryHandle.h>
 
 // Library/third-party includes

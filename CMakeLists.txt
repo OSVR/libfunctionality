@@ -3,6 +3,9 @@ project(libfunctionality)
 
 set(libfunctionality_VERSION 0.1)
 
+### Pull in Android cmake flags
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${my_cxx_flags}" )
+set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${my_cxx_flags}" )
 ###
 # Configuration Options
 ###
@@ -11,6 +14,10 @@ option(BUILD_WITH_DYNAMIC_SUPPORT "Should we support dynamically-loaded plugins?
 
 if(NOT BUILD_WITH_DYNAMIC_SUPPORT)
     message(FATAL_ERROR "Dynamically-loaded plugin support is presently the only support implemented!")
+endif()
+
+if(APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
 endif()
 
 ###
