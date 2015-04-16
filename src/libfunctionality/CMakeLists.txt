@@ -46,7 +46,6 @@ set(API
 
 set(SOURCE
     DynamicLoadConfig.h.in
-    Export.h.in
     LoadPlugin.cpp
     PluginHandle.cpp)
 
