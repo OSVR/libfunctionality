@@ -5,6 +5,9 @@ if(BUILD_WITH_DYNAMIC_SUPPORT)
     if(WIN32)
         set(LIBFUNC_DL_WIN32 TRUE)
         set(LIBFUNC_DL_SUPPORT TRUE)
+    elseif(ANDROID)
+        set(LIBFUNC_DL_LIBDL TRUE)
+        set(LIBFUNC_DL_SUPPORT TRUE)
     else()
         # Look for POSIX dlfcn/libdl stuff.
         include(CheckSymbolExists)
@@ -23,6 +26,7 @@ if(BUILD_WITH_DYNAMIC_SUPPORT)
         message(FATAL_ERROR "Could not find a supported method of dynamic library loading for your platform!")
     endif()
 endif()
+
 configure_file(DynamicLoadConfig.h.in "${CMAKE_CURRENT_BINARY_DIR}/DynamicLoadConfig.h")
 
 ###
