@@ -25,12 +25,6 @@ if(NOT CMAKE_INSTALL_DOCDIR)
 	set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME})
 endif()
 
-if(ANDROID)
-    # Sternly instructed to include this by https://github.com/taka-no-me/android-cmake
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${my_cxx_flags}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${my_cxx_flags}")
-endif()
-
 ###
 # Set up build directories
 ###
