@@ -105,12 +105,14 @@ install(FILES LICENSE NOTICE
 # Set Up Package for External Usage
 ###
 include(CMakePackageConfigHelpers)
+include(GenerateCompatibilityVersionFile)
 set(CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/libfunctionality")
 
-write_basic_package_version_file(
+generate_compatibility_version_file(
     "${CMAKE_CURRENT_BINARY_DIR}/libfunctionalityConfigVersion.cmake"
     VERSION ${libfunctionality_VERSION}
-    COMPATIBILITY AnyNewerVersion)
+    COMPATIBILITY AnyNewerVersion
+    C_ABI)
 
 export(EXPORT libfunctionalityTargets
     FILE "${CMAKE_CURRENT_BINARY_DIR}/libfunctionalityTargets.cmake"
