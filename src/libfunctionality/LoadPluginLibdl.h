@@ -50,6 +50,26 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
         throw exceptions::BadPluginName();
     }
 
+    typedef void *(*DlsymReturn)();
+    
+    // attempt to load the symbol from the global symbol table. If successful,
+    // plugin is already pre-loaded
+    {
+        std::string ep_name = std::string("libfunc_ep_") + n;
+        DlsymReturn raw_ep;
+        *(void **)(&raw_ep) =
+            dlsym(0, ep_name.c_str());
+            
+        if (dlerror() == NULL && raw_ep != NULL) {
+           entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
+           libfunc_ep_return_t result = (*ep)(opaque);
+           if (result != LIBFUNC_RETURN_SUCCESS) {
+               throw exceptions::PluginEntryPointFailed(n);
+           }
+           return PluginHandle();
+        } 
+    }
+    
     LibraryHandle lib(RAIILoadLibrary(n + LIBFUNC_MODULE_SUFFIX));
 
     if (!lib) {
@@ -65,27 +85,28 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
 /// Posix-recommended,
 /// the other is simpler C++.
 #if 1
-    typedef void *(*DlsymReturn)();
-    DlsymReturn raw_ep;
-    *(void **)(&raw_ep) =
-        dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
-    if (dlerror() != NULL || raw_ep == NULL) {
-        throw exceptions::CannotLoadEntryPoint(n);
-    }
-    entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
-#else
-    entry_point_t ep = reinterpret_cast<entry_point_t>(
-        dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING));
-#endif
+    {
+        DlsymReturn raw_ep;
+        *(void **)(&raw_ep) =
+            dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
+        if (dlerror() != NULL || raw_ep == NULL) {
+            throw exceptions::CannotLoadEntryPoint(n);
+        }
+        entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
+    #else
+        entry_point_t ep = reinterpret_cast<entry_point_t>(
+            dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING));
+    #endif
 
-    if (dlerror() != NULL || ep == NULL) {
-        throw exceptions::CannotLoadEntryPoint(n);
+        if (dlerror() != NULL || ep == NULL) {
+            throw exceptions::CannotLoadEntryPoint(n);
+        }
+        libfunc_ep_return_t result = (*ep)(opaque);
+        if (result != LIBFUNC_RETURN_SUCCESS) {
+            throw exceptions::PluginEntryPointFailed(n);
+        }
     }
-    libfunc_ep_return_t result = (*ep)(opaque);
-    if (result != LIBFUNC_RETURN_SUCCESS) {
-        throw exceptions::PluginEntryPointFailed(n);
-    }
-
+    
     return PluginHandle(lib);
 }
 } // end of namespace libfunc
