@@ -59,7 +59,7 @@ Copyright 2014 Sensics, Inc.
  * In dynamic mode, we have to create the common entry point as a trampoline to
  * the unique one. */
 #define LIBFUNC_DETAIL_PLUGIN(PLUGINNAME)                                      \
-    LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);                                 \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);                                 \
     LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION {        \
         return LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)(LIBFUNC_DETAIL_PARAM_NAME);  \
     }

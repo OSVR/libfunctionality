@@ -57,19 +57,20 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     {
         std::string ep_name = std::string("libfunc_ep_") + n;
         DlsymReturn raw_ep;
-        *(void **)(&raw_ep) =
-            dlsym(0, ep_name.c_str());
-            
-        if (dlerror() == NULL && raw_ep != NULL) {
-           entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
-           libfunc_ep_return_t result = (*ep)(opaque);
-           if (result != LIBFUNC_RETURN_SUCCESS) {
-               throw exceptions::PluginEntryPointFailed(n);
-           }
-           return PluginHandle();
-        } 
+        dlerror(); // clear the error
+        *(void **)(&raw_ep) = dlsym(RTLD_DEFAULT, ep_name.c_str());
+
+        const char* err = dlerror();
+        if (err == NULL && raw_ep != NULL) {
+            entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
+            libfunc_ep_return_t result = (*ep)(opaque);
+            if (result != LIBFUNC_RETURN_SUCCESS) {
+                throw exceptions::PluginEntryPointFailed(n);
+            }
+            return PluginHandle();
+        }
     }
-    
+
     LibraryHandle lib(RAIILoadLibrary(n + LIBFUNC_MODULE_SUFFIX));
 
     if (!lib) {
@@ -84,8 +85,8 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
 /// @todo Pick one of these two implementations - one is more C and
 /// Posix-recommended,
 /// the other is simpler C++.
-#if 1
     {
+#if 1
         DlsymReturn raw_ep;
         *(void **)(&raw_ep) =
             dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
@@ -93,10 +94,10 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
             throw exceptions::CannotLoadEntryPoint(n);
         }
         entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
-    #else
+#else
         entry_point_t ep = reinterpret_cast<entry_point_t>(
             dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING));
-    #endif
+#endif
 
         if (dlerror() != NULL || ep == NULL) {
             throw exceptions::CannotLoadEntryPoint(n);
@@ -106,7 +107,7 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
             throw exceptions::PluginEntryPointFailed(n);
         }
     }
-    
+
     return PluginHandle(lib);
 }
 } // end of namespace libfunc
