@@ -100,7 +100,8 @@ typedef char libfunc_ep_return_t;
 /** @brief The string name of the common entry point.
     @todo make this use c preproc stringize while dodging portability problems.
  */
-#define LIBFUNC_DETAIL_EP_COMMON_NAME_STRING "libfunc_entry_point"
+#define LIBFUNC_DETAIL_EP_COMMON_NAME_STRING                                   \
+    LIBFUNC_DETAIL_STRINGIFY(LIBFUNC_DETAIL_EP_COMMON_NAME)
 
 /** @brief Declaration of the common entry point used in dynamic mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_DECLARATION                                   \
