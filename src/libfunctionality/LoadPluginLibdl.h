@@ -45,13 +45,29 @@ PluginHandle loadPluginByName(const char *n, void *opaque) {
     return loadPluginByName(std::string(n), opaque);
 }
 
+typedef void *(*DlsymReturn)();
+
+/// internal helper function used by both the global symbol table entry point
+/// path as well as the load from the dlopened handle path
+static inline entry_point_t convertAndCallEntryPoint(std::string const &n,
+                                                     DlsymReturn raw_ep,
+                                                     void *opaque) {
+    entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
+    if (ep == NULL) {
+        throw exceptions::CannotLoadEntryPoint(n);
+    }
+    libfunc_ep_return_t result = (*ep)(opaque);
+    if (result != LIBFUNC_RETURN_SUCCESS) {
+        throw exceptions::PluginEntryPointFailed(n);
+    }
+    return ep;
+}
+
 PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     if (n.empty()) {
         throw exceptions::BadPluginName();
     }
 
-    typedef void *(*DlsymReturn)();
-    
     // attempt to load the symbol from the global symbol table. If successful,
     // plugin is already pre-loaded
     {
@@ -61,13 +77,11 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
         dlerror(); // clear the error
         *(void **)(&raw_ep) = dlsym(RTLD_DEFAULT, ep_name.c_str());
 
-        const char* err = dlerror();
+        const char *err = dlerror();
         if (err == NULL && raw_ep != NULL) {
-            entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
-            libfunc_ep_return_t result = (*ep)(opaque);
-            if (result != LIBFUNC_RETURN_SUCCESS) {
-                throw exceptions::PluginEntryPointFailed(n);
-            }
+            convertAndCallEntryPoint(n, raw_ep, opaque);
+            // Yes, returning an empty PluginHandle here works fine, since it's
+            // just for lifetime management.
             return PluginHandle();
         }
     }
@@ -87,26 +101,13 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
 /// Posix-recommended,
 /// the other is simpler C++.
     {
-#if 1
         DlsymReturn raw_ep;
         *(void **)(&raw_ep) =
             dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
         if (dlerror() != NULL || raw_ep == NULL) {
             throw exceptions::CannotLoadEntryPoint(n);
         }
-        entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
-#else
-        entry_point_t ep = reinterpret_cast<entry_point_t>(
-            dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING));
-#endif
-
-        if (dlerror() != NULL || ep == NULL) {
-            throw exceptions::CannotLoadEntryPoint(n);
-        }
-        libfunc_ep_return_t result = (*ep)(opaque);
-        if (result != LIBFUNC_RETURN_SUCCESS) {
-            throw exceptions::PluginEntryPointFailed(n);
-        }
+        convertAndCallEntryPoint(n, raw_ep, opaque);
     }
 
     return PluginHandle(lib);
