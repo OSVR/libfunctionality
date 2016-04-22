@@ -55,7 +55,8 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     // attempt to load the symbol from the global symbol table. If successful,
     // plugin is already pre-loaded
     {
-        std::string ep_name = std::string("libfunc_ep_") + n;
+        std::string ep_name =
+            std::string(LIBFUNC_DETAIL_STRINGIFY(LIBFUNC_DETAIL_EP_PREFIX)) + n;
         DlsymReturn raw_ep;
         dlerror(); // clear the error
         *(void **)(&raw_ep) = dlsym(RTLD_DEFAULT, ep_name.c_str());

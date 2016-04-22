@@ -64,6 +64,12 @@ Copyright 2014 Sensics, Inc.
 /** @brief Utility macro for token pasting aka concatenation */
 #define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
+/** @brief Utility macro used in stringification of macros. */
+#define LIBFUNC_DETAIL_STRINGIFY_IMPL(X) #X
+
+/** @brief Utility macro forstringification of macro expansions. */
+#define LIBFUNC_DETAIL_STRINGIFY(X) LIBFUNC_DETAIL_STRINGIFY_IMPL(X)
+
 /** @brief The prefix appended to a plugin name to generate a unique entry point
  * name. */
 #define LIBFUNC_DETAIL_EP_PREFIX libfunc_ep_
