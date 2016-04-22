@@ -64,9 +64,13 @@ Copyright 2014 Sensics, Inc.
 /** @brief Utility macro for token pasting aka concatenation */
 #define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
+/** @brief The prefix appended to a plugin name to generate a unique entry point
+ * name. */
+#define LIBFUNC_DETAIL_EP_PREFIX libfunc_ep_
+
 /** @brief Generate the unique entry point name for each plugin. */
 #define LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)                                     \
-    LIBFUNC_DETAIL_CAT(libfunc_ep_, PLUGINNAME)
+    LIBFUNC_DETAIL_CAT(LIBFUNC_DETAIL_EP_PREFIX, PLUGINNAME)
 
 /** @brief Return type of the entry point function. */
 typedef char libfunc_ep_return_t;
