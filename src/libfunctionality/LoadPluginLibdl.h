@@ -47,6 +47,18 @@ PluginHandle loadPluginByName(const char *n, void *opaque) {
 
 typedef void *(*DlsymReturn)();
 
+/// Mini helper wrapper around dlsym, because that cast is nasty.
+static inline DlsymReturn retrieveEntryPoint(void *handle, const char *name) {
+    DlsymReturn raw_ep;
+    // Appropriate, but odd, syntax per the dlopen(3) man page.
+    // and
+    // http://stackoverflow.com/questions/1354537/dlsym-dlopen-with-runtime-arguments
+    dlerror(); // clear the error
+    /// @todo This is more C than C++, but it's Posix-recommended,
+    *(void **)(&raw_ep) = dlsym(handle, name);
+    return raw_ep;
+}
+
 /// internal helper function used by both the global symbol table entry point
 /// path as well as the load from the dlopened handle path
 static inline entry_point_t convertAndCallEntryPoint(std::string const &n,
@@ -73,9 +85,7 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     {
         std::string ep_name =
             std::string(LIBFUNC_DETAIL_STRINGIFY(LIBFUNC_DETAIL_EP_PREFIX)) + n;
-        DlsymReturn raw_ep;
-        dlerror(); // clear the error
-        *(void **)(&raw_ep) = dlsym(RTLD_DEFAULT, ep_name.c_str());
+        DlsymReturn raw_ep = retrieveEntryPoint(RTLD_DEFAULT, ep_name.c_str());
 
         const char *err = dlerror();
         if (err == NULL && raw_ep != NULL) {
@@ -92,18 +102,9 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
         throw exceptions::CannotLoadPlugin(n);
     }
 
-    // Appropriate, but odd, syntax per the dlopen(3) man page.
-    // and
-    // http://stackoverflow.com/questions/1354537/dlsym-dlopen-with-runtime-arguments
-    dlerror(); // clear errors
-
-/// @todo Pick one of these two implementations - one is more C and
-/// Posix-recommended,
-/// the other is simpler C++.
     {
-        DlsymReturn raw_ep;
-        *(void **)(&raw_ep) =
-            dlsym(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
+        DlsymReturn raw_ep =
+            retrieveEntryPoint(lib.get(), LIBFUNC_DETAIL_EP_COMMON_NAME_STRING);
         if (dlerror() != NULL || raw_ep == NULL) {
             throw exceptions::CannotLoadEntryPoint(n);
         }
