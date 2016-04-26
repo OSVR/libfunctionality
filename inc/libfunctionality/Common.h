@@ -74,9 +74,14 @@ Copyright 2014 Sensics, Inc.
  * name. */
 #define LIBFUNC_DETAIL_EP_PREFIX libfunc_ep_
 
+/** @brief Utility macro (second-level expansion) for unique entry point
+ * generation */
+#define LIBFUNC_DETAIL_EP_NAME_IMPL(X, PLUGINNAME)                             \
+    LIBFUNC_DETAIL_CAT(X, PLUGINNAME)
+
 /** @brief Generate the unique entry point name for each plugin. */
 #define LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)                                     \
-    LIBFUNC_DETAIL_CAT(LIBFUNC_DETAIL_EP_PREFIX, PLUGINNAME)
+    LIBFUNC_DETAIL_EP_NAME_IMPL(LIBFUNC_DETAIL_EP_PREFIX, PLUGINNAME)
 
 /** @brief Return type of the entry point function. */
 typedef char libfunc_ep_return_t;
