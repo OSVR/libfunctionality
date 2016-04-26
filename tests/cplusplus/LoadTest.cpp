@@ -26,6 +26,7 @@
 
 // Internal Includes
 #include <libfunctionality/LoadPlugin.h>
+#include <libfunctionality/PluginInterface.h>
 
 // Library/third-party includes
 #include "gtest/gtest.h"
@@ -34,6 +35,20 @@
 #include <string>
 
 using std::string;
+
+// loading from the global symbol table is only implemented currently in the libdl path
+// @todo implement global symbol table plugin loading in the win32 path and remove this ifdef
+#ifdef LIBFUNC_DL_LIBDL
+
+LIBFUNC_PLUGIN_NO_PARAM(com_sensics_libfunc_tests_staticplugin) {
+    return LIBFUNC_RETURN_SUCCESS;
+}
+
+TEST(load_static_plugin, load_from_global) {
+    ASSERT_NO_THROW((libfunc::loadPluginByName("com_sensics_libfunc_tests_staticplugin", NULL)));
+}
+
+#endif
 
 TEST(load_dummy_plugin, cstr_name_null_data) {
     ASSERT_NO_THROW((libfunc::loadPluginByName("DummyPlugin", NULL)));

@@ -64,9 +64,24 @@ Copyright 2014 Sensics, Inc.
 /** @brief Utility macro for token pasting aka concatenation */
 #define LIBFUNC_DETAIL_CAT(A, B) LIBFUNC_DETAIL_CAT_IMPL(A##B)
 
+/** @brief Utility macro used in stringification of macros. */
+#define LIBFUNC_DETAIL_STRINGIFY_IMPL(X) #X
+
+/** @brief Utility macro for stringification of macro expansions. */
+#define LIBFUNC_DETAIL_STRINGIFY(X) LIBFUNC_DETAIL_STRINGIFY_IMPL(X)
+
+/** @brief The prefix appended to a plugin name to generate a unique entry point
+ * name. */
+#define LIBFUNC_DETAIL_EP_PREFIX libfunc_ep_
+
+/** @brief Utility macro (second-level expansion) for unique entry point
+ * generation */
+#define LIBFUNC_DETAIL_EP_NAME_IMPL(X, PLUGINNAME)                             \
+    LIBFUNC_DETAIL_CAT(X, PLUGINNAME)
+
 /** @brief Generate the unique entry point name for each plugin. */
 #define LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)                                     \
-    LIBFUNC_DETAIL_CAT(libfunc_ep_, PLUGINNAME)
+    LIBFUNC_DETAIL_EP_NAME_IMPL(LIBFUNC_DETAIL_EP_PREFIX, PLUGINNAME)
 
 /** @brief Return type of the entry point function. */
 typedef char libfunc_ep_return_t;
@@ -90,7 +105,8 @@ typedef char libfunc_ep_return_t;
 /** @brief The string name of the common entry point.
     @todo make this use c preproc stringize while dodging portability problems.
  */
-#define LIBFUNC_DETAIL_EP_COMMON_NAME_STRING "libfunc_entry_point"
+#define LIBFUNC_DETAIL_EP_COMMON_NAME_STRING                                   \
+    LIBFUNC_DETAIL_STRINGIFY(LIBFUNC_DETAIL_EP_COMMON_NAME)
 
 /** @brief Declaration of the common entry point used in dynamic mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_DECLARATION                                   \
