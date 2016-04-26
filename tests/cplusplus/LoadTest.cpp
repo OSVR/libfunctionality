@@ -26,6 +26,7 @@
 
 // Internal Includes
 #include <libfunctionality/LoadPlugin.h>
+#include <libfunctionality/PluginInterface.h>
 
 // Library/third-party includes
 #include "gtest/gtest.h"
@@ -34,6 +35,14 @@
 #include <string>
 
 using std::string;
+
+LIBFUNC_PLUGIN_NO_PARAM(com_sensics_libfunc_tests_staticplugin) {
+    return LIBFUNC_RETURN_SUCCESS;
+}
+
+TEST(load_static_plugin, load_from_global) {
+    ASSERT_NO_THROW((libfunc::loadPluginByName("com_sensics_libfunc_tests_staticplugin", NULL)));
+}
 
 TEST(load_dummy_plugin, cstr_name_null_data) {
     ASSERT_NO_THROW((libfunc::loadPluginByName("DummyPlugin", NULL)));
