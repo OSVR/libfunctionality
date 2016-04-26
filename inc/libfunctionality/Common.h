@@ -67,7 +67,7 @@ Copyright 2014 Sensics, Inc.
 /** @brief Utility macro used in stringification of macros. */
 #define LIBFUNC_DETAIL_STRINGIFY_IMPL(X) #X
 
-/** @brief Utility macro forstringification of macro expansions. */
+/** @brief Utility macro for stringification of macro expansions. */
 #define LIBFUNC_DETAIL_STRINGIFY(X) LIBFUNC_DETAIL_STRINGIFY_IMPL(X)
 
 /** @brief The prefix appended to a plugin name to generate a unique entry point
