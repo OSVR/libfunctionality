@@ -26,23 +26,55 @@
 
 // Internal Includes
 #include "LibraryHandleWin32.h"
+#include <libfunctionality/Exceptions.h>
 
 // Library/third-party includes
 // - none
 
 // Standard includes
+#include <string>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 namespace libfunc {
+
+static std::string getLastErrorMessage()
+{
+    std::string error_msg;
+    const auto error_code = GetLastError();
+    if (ERROR_SUCCESS == error_code)
+        return error_msg;
+
+    char* buffer = nullptr;
+
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                  nullptr, error_code,
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                  (LPTSTR)&buffer, 0, nullptr);
+
+    if (!buffer)
+        return error_msg;
+
+    error_msg = buffer;
+    LocalFree(buffer);
+
+    return error_msg;
+}
 
 static void LibraryFreer(void *handle) {
     FreeLibrary(static_cast<HMODULE>(handle));
 }
 
 LibraryHandle RAIILoadLibrary(std::string const &name) {
-    return LibraryHandle(static_cast<void *>(LoadLibrary(name.c_str())),
-                         &LibraryFreer);
+    auto lib = LibraryHandle(static_cast<void *>(LoadLibrary(name.c_str())),
+                             &LibraryFreer);
+    if (!lib) {
+        const auto error_msg = getLastErrorMessage();
+        throw exceptions::CannotLoadPlugin(name, error_msg.c_str());
+    }
+
+    return lib;
 }
 
 } // end of namespace libfunc
