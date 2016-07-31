@@ -71,7 +71,11 @@ LibraryHandle RAIILoadLibrary(std::string const &name) {
                              &LibraryFreer);
     if (!lib) {
         const auto error_msg = getLastErrorMessage();
-        throw exceptions::CannotLoadPlugin(name, error_msg.c_str());
+        if (error_msg.empty()) {
+            throw exceptions::CannotLoadPlugin(name);
+        } else {
+            throw exceptions::CannotLoadPlugin(name, error_msg.c_str());
+        }
     }
 
     return lib;
