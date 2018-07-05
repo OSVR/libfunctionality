@@ -1,0 +1,55 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+os:
+  - osx
+  - linux
+
+env:
+  - CONFIG=Release
+  - CONFIG=Debug
+
+matrix:
+  exclude:
+  - os: osx
+    compiler: gcc
+
+before_install:
+  - if [ $CC = gcc ]; then export CXX="g++-5" CC="gcc-5"; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' -a $CC = 'clang' ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
+  - $CC -v
+
+script:
+  - git submodule update --init --recursive
+  - mkdir build
+  - cd build
+  - if [ $TRAVIS_OS_NAME = 'osx' ]; then cmake .. -DCMAKE_BUILD_TYPE=${CONFIG} -DCMAKE_PREFIX_PATH=$INSTPRF -DCMAKE_OSX_ARCHITECTURES=x86_64; fi
+  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake .. -DCMAKE_BUILD_TYPE=${CONFIG} -DCMAKE_PREFIX_PATH=$INSTPRF; fi
+  - make all -j2
+
+sudo: false
+
+addons:
+  apt:
+    sources:
+    - george-edison55-precise-backports
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.7
+    packages:
+    - cmake-data
+    - cmake
+    - gcc-5
+    - g++-5
+    - clang-3.7
+  coverity_scan:
+    project:
+      name: "OSVR/libfunctionality"
+      description: "Build submitted via Travis CI"
+    notification_email: kevin@sensics.com
+    build_command_prepend: "cmake ..; make clean"
+    build_command: "make -j2"
+    branch_pattern: master
+
