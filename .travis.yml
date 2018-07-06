@@ -48,8 +48,8 @@ addons:
     project:
       name: "OSVR/libfunctionality"
       description: "Build submitted via Travis CI"
-    notification_email: kevin@sensics.com
+    notification_email: ryan.pavlik@gmail.com
     build_command_prepend: "cmake ..; make clean"
     build_command: "make -j2"
-    branch_pattern: master
+    branch_pattern: coverity_scan
 
