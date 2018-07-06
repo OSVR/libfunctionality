@@ -1,37 +1,35 @@
 language: cpp
-
 compiler:
-  - clang
-  - gcc
-
+- clang
+- gcc
 os:
-  - osx
-  - linux
-
+- osx
+- linux
 env:
+  matrix:
   - CONFIG=Release
   - CONFIG=Debug
-
+  global:
+    secure: A1Mnl+ArpPh1SzES6xbE9BqgyLW0HwHwDcnEGyqRbVKYiEXbPiiVotOZ9VUI+BmJYKo45MQ+rKQNYB+nDvecLm+33y4JGyfXtFcloM6Qmvp2gSxOPrm0xenr4xIc6Ewp2aqTY3x91DZYhTQ7nCTsg74Ih1jwJmyY3VHQMVCjRSI=
 matrix:
   exclude:
   - os: osx
     compiler: gcc
-
 before_install:
-  - if [ $CC = gcc ]; then export CXX="g++-5" CC="gcc-5"; fi
-  - if [ $TRAVIS_OS_NAME = 'linux' -a $CC = 'clang' ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
-  - $CC -v
-
+- if [ $CC = gcc ]; then export CXX="g++-5" CC="gcc-5"; fi
+- if [ $TRAVIS_OS_NAME = 'linux' -a $CC = 'clang' ]; then export CXX="clang++-3.7"
+  CC="clang-3.7"; fi
+- "$CC -v"
 script:
-  - git submodule update --init --recursive
-  - mkdir build
-  - cd build
-  - if [ $TRAVIS_OS_NAME = 'osx' ]; then cmake .. -DCMAKE_BUILD_TYPE=${CONFIG} -DCMAKE_PREFIX_PATH=$INSTPRF -DCMAKE_OSX_ARCHITECTURES=x86_64; fi
-  - if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake .. -DCMAKE_BUILD_TYPE=${CONFIG} -DCMAKE_PREFIX_PATH=$INSTPRF; fi
-  - make all -j2
-
+- git submodule update --init --recursive
+- mkdir build
+- cd build
+- if [ $TRAVIS_OS_NAME = 'osx' ]; then cmake .. -DCMAKE_BUILD_TYPE=${CONFIG} -DCMAKE_PREFIX_PATH=$INSTPRF
+  -DCMAKE_OSX_ARCHITECTURES=x86_64; fi
+- if [ $TRAVIS_OS_NAME = 'linux' ]; then cmake .. -DCMAKE_BUILD_TYPE=${CONFIG} -DCMAKE_PREFIX_PATH=$INSTPRF;
+  fi
+- make all -j2
 sudo: false
-
 addons:
   apt:
     sources:
@@ -46,10 +44,9 @@ addons:
     - clang-3.7
   coverity_scan:
     project:
-      name: "OSVR/libfunctionality"
-      description: "Build submitted via Travis CI"
+      name: OSVR/libfunctionality
+      description: Build submitted via Travis CI
     notification_email: ryan.pavlik@gmail.com
-    build_command_prepend: "cmake ..; make clean"
-    build_command: "make -j2"
+    build_command_prepend: cmake ..; make clean
+    build_command: make -j2
     branch_pattern: coverity_scan
-
