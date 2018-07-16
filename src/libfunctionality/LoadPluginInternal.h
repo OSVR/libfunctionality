@@ -1,5 +1,5 @@
 /** @file
-    @brief Implementation
+    @brief Internal header
 
     @date 2014
 
@@ -24,6 +24,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef INCLUDED_LoadPluginInternal_h_GUID_AEC00CE9_5EC3_4D93_6BFF_ABB175D5E66E
+#define INCLUDED_LoadPluginInternal_h_GUID_AEC00CE9_5EC3_4D93_6BFF_ABB175D5E66E
+
 // Internal Includes
 #include <libfunctionality/LoadPlugin.h>
 #include <libfunctionality/Common.h>
@@ -47,15 +50,4 @@ typedef libfunc_ep_return_t (*entry_point_t)(void *);
 /// @}
 } // end of namespace libfunc
 
-// PLATFORM_SPECIFIC CODE
-#ifdef LIBFUNC_DL_SUPPORT
-
-#ifdef LIBFUNC_DL_WIN32
-#include "LoadPluginWin32.h"
-#endif
-
-#ifdef LIBFUNC_DL_LIBDL
-#include "LoadPluginLibdl.h"
-#endif
-
-#endif
+#endif // INCLUDED_LoadPluginInternal_h_GUID_AEC00CE9_5EC3_4D93_6BFF_ABB175D5E66E

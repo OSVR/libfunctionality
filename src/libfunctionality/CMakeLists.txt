@@ -46,20 +46,20 @@ set(API
 
 set(SOURCE
     DynamicLoadConfig.h.in
-    LoadPlugin.cpp
+    LoadPluginInternal.h
     PluginHandle.cpp)
 
 if(LIBFUNC_DL_WIN32)
     list(APPEND SOURCE
         LibraryHandleWin32.cpp
         LibraryHandleWin32.h
-        LoadPluginWin32.h)
+        LoadPluginWin32.cpp)
 endif()
 if(LIBFUNC_DL_LIBDL)
     list(APPEND SOURCE
         LibraryHandleLibdl.cpp
         LibraryHandleLibdl.h
-        LoadPluginLibdl.h)
+        LoadPluginLibdl.cpp)
 endif()
 
 ###

@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation using libdl (linux, etc.)
 
     @date 2014
 
@@ -24,11 +24,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_LoadPluginLibdl_h_GUID_AEC00CE9_5EC3_4D93_6BFF_ABB175D5E66E
-#define INCLUDED_LoadPluginLibdl_h_GUID_AEC00CE9_5EC3_4D93_6BFF_ABB175D5E66E
-
 // Internal Includes
 #include "LibraryHandleLibdl.h"
+#include "LoadPluginInternal.h"
 
 // Library/third-party includes
 // - none
@@ -114,4 +112,3 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     return PluginHandle(lib);
 }
 } // end of namespace libfunc
-#endif // INCLUDED_LoadPluginLibdl_h_GUID_AEC00CE9_5EC3_4D93_6BFF_ABB175D5E66E

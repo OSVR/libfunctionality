@@ -1,5 +1,5 @@
 /** @file
-    @brief Header
+    @brief Implementation for win32
 
     @date 2014
 
@@ -24,11 +24,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef INCLUDED_LoadPluginWin32_h_GUID_F3039817_F263_43B5_B117_AD894AAF1A83
-#define INCLUDED_LoadPluginWin32_h_GUID_F3039817_F263_43B5_B117_AD894AAF1A83
-
 // Internal Includes
 #include "LibraryHandleWin32.h"
+#include "LoadPluginInternal.h"
 
 // Library/third-party includes
 // - none
@@ -76,4 +74,3 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     return PluginHandle(lib);
 }
 } // end of namespace libfunc
-#endif // INCLUDED_LoadPluginWin32_h_GUID_F3039817_F263_43B5_B117_AD894AAF1A83
