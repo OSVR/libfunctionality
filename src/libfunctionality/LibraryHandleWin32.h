@@ -28,6 +28,8 @@
 #define INCLUDED_LibraryHandleWin32_h_GUID_767832A3_0B91_43A0_B49F_3818CB69C3A7
 
 // Internal Includes
+#include <libfunctionality/DynamicLoadConfig.h>
+#ifdef LIBFUNC_DL_WIN32
 #include <libfunctionality/LibraryHandle.h>
 
 // Library/third-party includes
@@ -47,5 +49,5 @@ inline HMODULE GetHMODULE(LibraryHandle const &h) {
 }
 
 } // end of namespace libfunc
-
+#endif // LIBFUNC_DL_WIN32
 #endif // INCLUDED_LibraryHandleWin32_h_GUID_767832A3_0B91_43A0_B49F_3818CB69C3A7

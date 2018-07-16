@@ -25,6 +25,8 @@
 // limitations under the License.
 
 // Internal Includes
+#include <libfunctionality/DynamicLoadConfig.h>
+#ifdef LIBFUNC_DL_WIN32
 #include "LibraryHandleWin32.h"
 #include "LoadPluginInternal.h"
 
@@ -74,3 +76,4 @@ PluginHandle loadPluginByName(std::string const &n, void *opaque) {
     return PluginHandle(lib);
 }
 } // end of namespace libfunc
+#endif // LIBFUNC_DL_WIN32

@@ -49,18 +49,20 @@ set(SOURCE
     LoadPluginInternal.h
     PluginHandle.cpp)
 
-if(LIBFUNC_DL_WIN32)
-    list(APPEND SOURCE
-        LibraryHandleWin32.cpp
-        LibraryHandleWin32.h
-        LoadPluginWin32.cpp)
-endif()
-if(LIBFUNC_DL_LIBDL)
-    list(APPEND SOURCE
-        LibraryHandleLibdl.cpp
-        LibraryHandleLibdl.h
-        LoadPluginLibdl.cpp)
-endif()
+
+### Implementations - guarded with ifdefs
+
+# Win32
+list(APPEND SOURCE
+    LibraryHandleWin32.cpp
+    LibraryHandleWin32.h
+    LoadPluginWin32.cpp)
+
+# libdl
+list(APPEND SOURCE
+    LibraryHandleLibdl.cpp
+    LibraryHandleLibdl.h
+    LoadPluginLibdl.cpp)
 
 ###
 # "Interface" target for plugins to use - they don't need to link, just need the includes.

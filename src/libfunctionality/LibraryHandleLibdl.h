@@ -28,6 +28,8 @@
 #define INCLUDED_LibraryHandleLibdl_h_GUID_BA547FB8_A564_4B94_F2AD_58BA772462E4
 
 // Internal Includes
+#include <libfunctionality/DynamicLoadConfig.h>
+#ifdef LIBFUNC_DL_LIBDL
 #include <libfunctionality/LibraryHandle.h>
 
 // Library/third-party includes
@@ -40,4 +42,5 @@ namespace libfunc {
 LibraryHandle RAIILoadLibrary(std::string const &name);
 } // end of namespace libfunc
 
+#endif // LIBFUNC_DL_LIBDL
 #endif // INCLUDED_LibraryHandleLibdl_h_GUID_BA547FB8_A564_4B94_F2AD_58BA772462E4

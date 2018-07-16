@@ -25,6 +25,8 @@
 // limitations under the License.
 
 // Internal Includes
+#include <libfunctionality/DynamicLoadConfig.h>
+#ifdef LIBFUNC_DL_WIN32
 #include "LibraryHandleWin32.h"
 #include <libfunctionality/Exceptions.h>
 
@@ -82,3 +84,4 @@ LibraryHandle RAIILoadLibrary(std::string const &name) {
 }
 
 } // end of namespace libfunc
+#endif // LIBFUNC_DL_WIN32

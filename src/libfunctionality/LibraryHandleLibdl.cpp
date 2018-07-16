@@ -25,8 +25,9 @@
 // limitations under the License.
 
 // Internal Includes
-#include "LibraryHandleLibdl.h"
 #include <libfunctionality/DynamicLoadConfig.h>
+#ifdef LIBFUNC_DL_LIBDL
+#include "LibraryHandleLibdl.h"
 #include <libfunctionality/Exceptions.h>
 
 // Library/third-party includes
@@ -53,3 +54,5 @@ LibraryHandle RAIILoadLibrary(std::string const &name) {
 }
 
 } // end of namespace libfunc
+
+#endif // LIBFUNC_DL_LIBDL
