@@ -26,7 +26,11 @@ target_link_libraries(LoadTests functionality libfunc-vendored-catch)
 include_directories("${gtest_SOURCE_DIR}/include")
 function(setup_gtest target)
     target_link_libraries(${target} gtest_main)
-    add_test(NAME gtest-${target} COMMAND ${target})
+    if(WIN32)
+        # Right now, tests are only on Windows due to search path issues.
+        # see issue #22
+        add_test(NAME gtest-${target} COMMAND ${target})
+    endif()
 endfunction()
 
 add_executable(LoadTest LoadTest.cpp LoadTestWithParam.cpp)
