@@ -45,8 +45,11 @@ set(API
     "${HEADER_LOCATION}/SharedPtr.h")
 
 set(SOURCE
+    BinaryLocation.cpp
+    BinaryLocation.h
     DynamicLoadConfig.h.in
     LoadPluginInternal.h
+    PlatformDefinitions.h
     PluginHandle.cpp)
 
 
