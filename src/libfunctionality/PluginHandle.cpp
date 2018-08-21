@@ -42,8 +42,9 @@ PluginHandle::PluginHandle(LibraryHandle h) : m_handle(std::move(h)) {}
 
 // Keeps deallocation inside our library.
 PluginHandle::PluginHandle(PluginHandle &&other) = default;
-
-// Keeps deallocation inside our library.
+PluginHandle::PluginHandle(PluginHandle const &other) = default;
+PluginHandle &PluginHandle::operator=(PluginHandle const &other) = default;
+PluginHandle &PluginHandle::operator=(PluginHandle &&other) = default;
 PluginHandle::~PluginHandle() = default;
 
 } // end of namespace libfunc

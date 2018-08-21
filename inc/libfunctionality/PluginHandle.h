@@ -56,14 +56,14 @@ class PluginHandle {
     /// @brief Move constructor
     LIBFUNC_EXPORT PluginHandle(PluginHandle &&other);
 
-    /// Non-copyable
-    PluginHandle(PluginHandle const &) = delete;
+    /// @brief Copy constructor
+    LIBFUNC_EXPORT PluginHandle(PluginHandle const &other);
 
-    /// Non-copyable
-    PluginHandle &operator=(PluginHandle const &) = delete;
+    /// @brief Copy assignment
+    LIBFUNC_EXPORT PluginHandle &operator=(PluginHandle const &other);
 
-    /// Non-move-assignable
-    PluginHandle &operator=(PluginHandle &&) = delete;
+    /// @brief Move assignment
+    LIBFUNC_EXPORT PluginHandle &operator=(PluginHandle &&other);
 
   private:
     LibraryHandle m_handle;
