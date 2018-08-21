@@ -41,8 +41,8 @@ Copyright 2014 Sensics, Inc.
 /* - none */
 
 /** @addtogroup pluginiface Plugin Writing
-* @{
-*/
+ * @{
+ */
 
 /** @brief Return code from entry point in case of success. */
 #define LIBFUNC_RETURN_SUCCESS (0)
@@ -52,12 +52,12 @@ Copyright 2014 Sensics, Inc.
 /** @} */
 
 /** @addtogroup impl Implementation Details
-  * @brief Details to be considered "innards" and not a part of the public API.
-  *
-  * Possibly useful to developers working on libfunctionality, but not to those
-  * merely using its capabilities.
-  * @{
-  */
+ * @brief Details to be considered "innards" and not a part of the public API.
+ *
+ * Possibly useful to developers working on libfunctionality, but not to those
+ * merely using its capabilities.
+ * @{
+ */
 /** @brief Utility macro used in concatenation. */
 #define LIBFUNC_DETAIL_CAT_IMPL(X) X
 
@@ -90,14 +90,9 @@ typedef char libfunc_ep_return_t;
 #define LIBFUNC_DETAIL_EP_FUNCDECLARE(FUNCNAME, PARAMNAME)                     \
     libfunc_ep_return_t FUNCNAME(void *PARAMNAME)
 
-/** @brief The canonical name of the single opaque pointer argument to the entry
- * point.
- */
-#define LIBFUNC_DETAIL_PARAM_NAME opaque
-
 /** @brief Generate an entry point declaration with the common arg name */
-#define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME)                                   \
-    LIBFUNC_DETAIL_EP_FUNCDECLARE(FUNCNAME, LIBFUNC_DETAIL_PARAM_NAME)
+#define LIBFUNC_DETAIL_EP_FUNCTYPE(FUNCNAME, PARAMNAME)                        \
+    LIBFUNC_DETAIL_EP_FUNCDECLARE(FUNCNAME, PARAMNAME)
 
 /** @brief The name of the common entry point used in dynamic loading mode. */
 #define LIBFUNC_DETAIL_EP_COMMON_NAME libfunc_entry_point
@@ -109,12 +104,12 @@ typedef char libfunc_ep_return_t;
     LIBFUNC_DETAIL_STRINGIFY(LIBFUNC_DETAIL_EP_COMMON_NAME)
 
 /** @brief Declaration of the common entry point used in dynamic mode. */
-#define LIBFUNC_DETAIL_EP_COMMON_DECLARATION                                   \
-    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_COMMON_NAME)
+#define LIBFUNC_DETAIL_EP_COMMON_DECLARATION(PARAMNAME)                        \
+    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_COMMON_NAME, PARAMNAME)
 
 /** @brief The declaration of the unique entry point for a plugin. */
-#define LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME)                              \
-    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(PLUGINNAME))
+#define LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME, PARAMNAME)                   \
+    LIBFUNC_DETAIL_EP_FUNCTYPE(LIBFUNC_DETAIL_EP_NAME(PLUGINNAME), PARAMNAME)
 
 #ifdef __cplusplus
 /** @brief Wrapper for extern "C" when compiling in C++ mode. */

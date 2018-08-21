@@ -51,56 +51,59 @@ Copyright 2014 Sensics, Inc.
  *
  * In static mode, we don't create the commonly-named entry point, just the
  * unique one */
-#define LIBFUNC_DETAIL_PLUGIN(PLUGINNAME)                                      \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);
+#define LIBFUNC_DETAIL_PLUGIN(PLUGINNAME, PARAMNAME, DEFPARAM)                 \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME,     \
+                                                               PARAMNAME);
 #else
 /** @brief Mode-specific implementation for LIBFUNC_PLUGIN.
  *
  * In dynamic mode, we have to create the common entry point as a trampoline to
  * the unique one. */
-#define LIBFUNC_DETAIL_PLUGIN(PLUGINNAME)                                      \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME);                                 \
-    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION {        \
-        return LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)(LIBFUNC_DETAIL_PARAM_NAME);  \
+#define LIBFUNC_DETAIL_PLUGIN(PLUGINNAME, PARAMNAME, DEFPARAM)                 \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_DECLARATION(PLUGINNAME,     \
+                                                               PARAMNAME);     \
+    LIBFUNC_DETAIL_EP_DECORATION LIBFUNC_DETAIL_EP_COMMON_DECLARATION(         \
+        DEFPARAM) {                                                            \
+        return LIBFUNC_DETAIL_EP_NAME(PLUGINNAME)(DEFPARAM);                   \
     }
 #endif
 /** @} */
 
 /** @addtogroup pluginiface Plugin Writing
-*  @brief API needed to write a plugin loadable by libfunctionality.
-*
-*  Any API you need beyond simply being loaded has to come from your host app
-*  or library, this is expressly outside the scope of libfunctionality.
-*
-*  Each plugin needs a unique name. We encourage, but do not require, a scheme
-*  based on "reverse domain name notation" with dots replaced by underscores.
-*  (The plugin name must only contain characters valid as part of a C
-*  identifier, since it's used to generate C identifiers.) We'll use
-*  com_example_plugin as a placeholder below.
-*
-*  A plugin, at the minimum, consists of a single implementation file (c or
-*  cpp) that:
-*
-*   - includes <libfunctionality/PluginInterface.h>
-*   - defines an entry-point function by
-*     - invoking either LIBFUNC_PLUGIN(com_example_plugin, argname) or
-*       LIBFUNC_PLUGIN_NO_PARAM(com_example_plugin), depending on whether
-*       or not you wish to receive the optional opaque pointer argument.
-*     - following the LIBFUNC_PLUGIN() or LIBFUNC_PLUGIN_NO_PARAM() macro
-*       with a function body in braces
-*     - returning LIBFUNC_RETURN_SUCCESS if whatever the entry point had to
-*       do worked properly, and LIBFUNC_RETURN_FAILURE if it didn't work right.
-*
-*  Thus the simplest, do nothing, plugin looks like:
-*  @code
-*  #include <libfunctionality/PluginInterface.h>
-*  LIBFUNC_PLUGIN_NO_PARAM(com_example_plugin) {
-*      return LIBFUNC_RETURN_SUCCESS;
-*  }
-*  @endcode
-*
-*  @{
-*/
+ *  @brief API needed to write a plugin loadable by libfunctionality.
+ *
+ *  Any API you need beyond simply being loaded has to come from your host app
+ *  or library, this is expressly outside the scope of libfunctionality.
+ *
+ *  Each plugin needs a unique name. We encourage, but do not require, a scheme
+ *  based on "reverse domain name notation" with dots replaced by underscores.
+ *  (The plugin name must only contain characters valid as part of a C
+ *  identifier, since it's used to generate C identifiers.) We'll use
+ *  com_example_plugin as a placeholder below.
+ *
+ *  A plugin, at the minimum, consists of a single implementation file (c or
+ *  cpp) that:
+ *
+ *   - includes <libfunctionality/PluginInterface.h>
+ *   - defines an entry-point function by
+ *     - invoking either LIBFUNC_PLUGIN(com_example_plugin, argname) or
+ *       LIBFUNC_PLUGIN_NO_PARAM(com_example_plugin), depending on whether
+ *       or not you wish to receive the optional opaque pointer argument.
+ *     - following the LIBFUNC_PLUGIN() or LIBFUNC_PLUGIN_NO_PARAM() macro
+ *       with a function body in braces
+ *     - returning LIBFUNC_RETURN_SUCCESS if whatever the entry point had to
+ *       do worked properly, and LIBFUNC_RETURN_FAILURE if it didn't work right.
+ *
+ *  Thus the simplest, do nothing, plugin looks like:
+ *  @code
+ *  #include <libfunctionality/PluginInterface.h>
+ *  LIBFUNC_PLUGIN_NO_PARAM(com_example_plugin) {
+ *      return LIBFUNC_RETURN_SUCCESS;
+ *  }
+ *  @endcode
+ *
+ *  @{
+ */
 /** @brief Generate the plugin boilerplate and start the definition of the
  *  entry point, taking an void * argument named PARAMNAME. The function body,
  *  returning either LIBFUNC_RETURN_SUCCESS or LIBFUNC_RETURN_FAILURE, should
@@ -111,7 +114,7 @@ Copyright 2014 Sensics, Inc.
  *  plugin.
  */
 #define LIBFUNC_PLUGIN(PLUGINNAME, PARAMNAME)                                  \
-    LIBFUNC_DETAIL_PLUGIN(PLUGINNAME);                                         \
+    LIBFUNC_DETAIL_PLUGIN(PLUGINNAME, PARAMNAME, PARAMNAME);                   \
     LIBFUNC_DETAIL_EP_FUNCDECLARE(LIBFUNC_DETAIL_EP_NAME(PLUGINNAME), PARAMNAME)
 
 /** @brief Generate the plugin boilerplate and start the definition of the
@@ -123,7 +126,10 @@ Copyright 2014 Sensics, Inc.
  *  by the entry point function body in a single implementation file in a
  *  plugin.
  */
-#define LIBFUNC_PLUGIN_NO_PARAM(PLUGINNAME) LIBFUNC_PLUGIN(PLUGINNAME, /**/)
+#define LIBFUNC_PLUGIN_NO_PARAM(PLUGINNAME)                                    \
+    LIBFUNC_DETAIL_PLUGIN(PLUGINNAME, /*opaque*/, opaque);                     \
+    LIBFUNC_DETAIL_EP_FUNCDECLARE(LIBFUNC_DETAIL_EP_NAME(PLUGINNAME),          \
+                                  /*opaque*/)
 /** @} */
 
 #endif
