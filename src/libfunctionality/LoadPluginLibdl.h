@@ -38,7 +38,7 @@
 
 namespace libfunc {
 PluginHandle loadPluginByName(const char *n, void *opaque) {
-    if (!n) {
+    if (n == nullptr) {
         throw exceptions::BadPluginName();
     }
 
@@ -55,6 +55,7 @@ static inline DlsymReturn retrieveEntryPoint(void *handle, const char *name) {
     // http://stackoverflow.com/questions/1354537/dlsym-dlopen-with-runtime-arguments
     dlerror(); // clear the error
     /// @todo This is more C than C++, but it's Posix-recommended,
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
     *(void **)(&raw_ep) = dlsym(handle, name);
     return raw_ep;
 }
@@ -64,6 +65,7 @@ static inline DlsymReturn retrieveEntryPoint(void *handle, const char *name) {
 static inline entry_point_t convertAndCallEntryPoint(std::string const &n,
                                                      DlsymReturn raw_ep,
                                                      void *opaque) {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     entry_point_t ep = reinterpret_cast<entry_point_t>(raw_ep);
     if (ep == NULL) {
         throw exceptions::CannotLoadEntryPoint(n);

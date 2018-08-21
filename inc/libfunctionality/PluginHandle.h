@@ -53,6 +53,18 @@ class PluginHandle {
     /// @brief Destructor
     LIBFUNC_EXPORT ~PluginHandle();
 
+    /// @brief Move constructor
+    LIBFUNC_EXPORT PluginHandle(PluginHandle &&other);
+
+    /// Non-copyable
+    PluginHandle(PluginHandle const &) = delete;
+
+    /// Non-copyable
+    PluginHandle &operator=(PluginHandle const &) = delete;
+
+    /// Non-move-assignable
+    PluginHandle &operator=(PluginHandle &&) = delete;
+
   private:
     LibraryHandle m_handle;
 };
