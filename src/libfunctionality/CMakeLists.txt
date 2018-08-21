@@ -93,6 +93,16 @@ if(BUILD_WITH_DYNAMIC_SUPPORT)
     target_link_libraries(functionality PUBLIC ${CMAKE_DL_LIBS})
 endif()
 
+if(BUILD_WITH_CLANG_TIDY_FIXIT)
+    set_target_properties(
+        functionality PROPERTIES
+        CXX_CLANG_TIDY "${CLANGTIDY_COMMAND};--fix")
+elseif(BUILD_WITH_CLANG_TIDY_FIXIT)
+    set_target_properties(
+        functionality PROPERTIES
+        CXX_CLANG_TIDY "${CLANGTIDY_COMMAND}")
+endif()
+
 ###
 # Generate export header
 ###

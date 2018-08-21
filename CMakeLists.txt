@@ -25,6 +25,18 @@ if(NOT CMAKE_INSTALL_DOCDIR)
 	set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME})
 endif()
 
+include(CMakeDependentOption)
+
+find_program(CLANGTIDY_COMMAND
+    NAMES
+    clang-tidy
+    clang-tidy.exe
+    clang-tidy-6.0
+    clang-tidy-6.0.exe)
+cmake_dependent_option(BUILD_WITH_CLANG_TIDY "Run the clang-tidy static analysis/lint tool during the build?" ON
+    "CLANGTIDY_COMMAND" OFF)
+cmake_dependent_option(BUILD_WITH_CLANG_TIDY_FIXIT "Run the clang-tidy static analysis/lint tool in --fix mode during the build?" OFF
+    "CLANGTIDY_COMMAND;BUILD_WITH_CLANG_TIDY" OFF)
 ###
 # Set up build directories
 ###
