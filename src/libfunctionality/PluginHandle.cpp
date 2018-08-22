@@ -27,8 +27,6 @@
 // Internal Includes
 #include <libfunctionality/PluginHandle.h>
 
-#include <utility>
-
 // Library/third-party includes
 // - none
 
@@ -38,13 +36,22 @@
 namespace libfunc {
 PluginHandle::PluginHandle() {}
 
-PluginHandle::PluginHandle(LibraryHandle h) : m_handle(std::move(h)) {}
+PluginHandle::PluginHandle(LibraryHandle const &h) : m_handle(h) {}
 
-// Keeps deallocation inside our library.
-PluginHandle::PluginHandle(PluginHandle &&other) = default;
-PluginHandle::PluginHandle(PluginHandle const &other) = default;
-PluginHandle &PluginHandle::operator=(PluginHandle const &other) = default;
-PluginHandle &PluginHandle::operator=(PluginHandle &&other) = default;
-PluginHandle::~PluginHandle() = default;
+PluginHandle::PluginHandle(PluginHandle const &other)
+    : m_handle(other.m_handle) {}
+
+PluginHandle &PluginHandle::operator=(PluginHandle const &other) {
+    if (this == &other) {
+        // detect self-assign
+        return *this;
+    }
+    m_handle = other.m_handle;
+    return *this;
+}
+
+PluginHandle::~PluginHandle() {
+    // Keeps deallocation inside our library.
+}
 
 } // end of namespace libfunc

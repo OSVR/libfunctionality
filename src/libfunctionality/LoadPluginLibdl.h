@@ -38,7 +38,7 @@
 
 namespace libfunc {
 PluginHandle loadPluginByName(const char *n, void *opaque) {
-    if (n == nullptr) {
+    if (n == NULL) {
         throw exceptions::BadPluginName();
     }
 

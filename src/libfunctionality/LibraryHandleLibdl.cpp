@@ -38,7 +38,7 @@
 namespace libfunc {
 
 static void DLCloser(void *handle) {
-    if (handle != nullptr) {
+    if (handle != NULL) {
         dlclose(handle);
     }
 }
@@ -46,7 +46,7 @@ static void DLCloser(void *handle) {
 LibraryHandle RAIILoadLibrary(std::string const &name) {
     dlerror();
     void *lib = dlopen(name.c_str(), RTLD_NOW);
-    if (lib == nullptr) {
+    if (lib == NULL) {
         throw exceptions::CannotLoadPlugin(name, dlerror());
     }
     return LibraryHandle(lib, &DLCloser);

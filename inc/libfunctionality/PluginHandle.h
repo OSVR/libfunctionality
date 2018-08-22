@@ -44,7 +44,7 @@ namespace libfunc {
 class PluginHandle {
   public:
     /// @brief Constructor
-    LIBFUNC_EXPORT PluginHandle(LibraryHandle h);
+    LIBFUNC_EXPORT PluginHandle(LibraryHandle const &h);
 
     /// @brief Default constructor, for assuming ownership of a plugin after
     /// creation of this object.
@@ -53,17 +53,11 @@ class PluginHandle {
     /// @brief Destructor
     LIBFUNC_EXPORT ~PluginHandle();
 
-    /// @brief Move constructor
-    LIBFUNC_EXPORT PluginHandle(PluginHandle &&other);
-
     /// @brief Copy constructor
     LIBFUNC_EXPORT PluginHandle(PluginHandle const &other);
 
     /// @brief Copy assignment
     LIBFUNC_EXPORT PluginHandle &operator=(PluginHandle const &other);
-
-    /// @brief Move assignment
-    LIBFUNC_EXPORT PluginHandle &operator=(PluginHandle &&other);
 
   private:
     LibraryHandle m_handle;

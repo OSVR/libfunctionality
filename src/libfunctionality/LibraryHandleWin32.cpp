@@ -39,19 +39,17 @@
 
 namespace libfunc {
 
-static std::string getLastErrorMessage()
-{
+static std::string getLastErrorMessage() {
     std::string error_msg;
     const auto error_code = GetLastError();
     if (ERROR_SUCCESS == error_code)
         return error_msg;
 
-    char* buffer = nullptr;
+    char *buffer = NULL;
 
     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                  nullptr, error_code,
-                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                  (LPTSTR)&buffer, 0, nullptr);
+                  NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                  (LPTSTR)&buffer, 0, NULL);
 
     if (!buffer)
         return error_msg;
