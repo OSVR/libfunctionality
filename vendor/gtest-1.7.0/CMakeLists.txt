@@ -59,6 +59,10 @@ include_directories(
 # Where Google Test's libraries can be found.
 link_directories(${gtest_BINARY_DIR}/src)
 
+# Remove warning about future removal of deprecated functionality that is
+# treated as an error.
+add_definitions(-D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING)
+
 ########################################################################
 #
 # Defines the gtest & gtest_main libraries.  User tests should link
