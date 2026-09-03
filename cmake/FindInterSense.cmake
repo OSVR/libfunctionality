@@ -18,15 +18,19 @@
 # http://wemarsh.com/
 # Kognitiv Neuroinformatik, Universität Bremen
 #
-# (building on Ryan Pavlik's templates)
+# (building on Rylie Pavlik's templates)
 #
-# 2013 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
-# http://academic.cleardefinition.com
+# 2013 Rylie Pavlik <rylie@ryliepavlik.com>
+# https://ryliepavlik.com/
 # Iowa State University HCI Graduate Program/VRAC
+#
+# Copyright 2013, Iowa State University
 #
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
+#
+# SPDX-License-Identifier: BSL-1.0
 
 set(INTERSENSE_ROOT_DIR
 	"${INTERSENSE_ROOT_DIR}"
@@ -38,32 +42,42 @@ if(APPLE)
 	set(_ARCH UniversalLib)
 else()
 	if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-		set(_ARCH x86_64)
+		set(_IS_ARCH x86_64)
 	else()
-		set(_ARCH x86_32)
+		set(_IS_ARCH x86_32)
 	endif()
 endif()
 
+set(_IS_INSTALLDIRS)
 if(APPLE)
-	set(_SDKDIR MacOSX)
+	set(_IS_SDKDIR MacOSX)
 elseif(WIN32)
-	set(_SDKDIR Windows)
+	set(_IS_SDKDIR Windows)
+	# Default locations, as well as registry places it records install locations,
+	# if you installed from a (actual or downloaded) product "CD"
+	foreach(_IS_PROD "IS-900 Software" "InertiaCube Software")
+		get_filename_component(_IS_REGPATH "[HKEY_LOCAL_MACHINE\\SOFTWARE\\InterSense\\${_IS_PROD};Path]" ABSOLUTE)
+		if(_IS_REGPATH AND (NOT "${_IS_REGPATH}" STREQUAL "/registry"))
+			list(APPEND _IS_INSTALLDIRS "${_IS_REGPATH}/SDK")
+		endif()
+		list(APPEND _IS_INSTALLDIRS "C:/InterSense/${_IS_PROD}/SDK")
+	endforeach()
 else() # Assume Linux, since that's the only other platform supported by this library
-	set(_SDKDIR Linux)
+	set(_IS_SDKDIR Linux)
 endif()
 
 find_path(INTERSENSE_INCLUDE_DIR
 	NAMES isense.h
-	PATHS "${INTERSENSE_ROOT_DIR}" "${INTERSENSE_ROOT_DIR}/SDK")
+	PATHS "${INTERSENSE_ROOT_DIR}" "${INTERSENSE_ROOT_DIR}/SDK" ${_IS_INSTALLDIRS})
 
 find_path(INTERSENSE_ISENSEC_DIR
 	NAMES isense.c
-	PATHS "${INTERSENSE_ROOT_DIR}" "${INTERSENSE_ROOT_DIR}/SDK"
+	PATHS "${INTERSENSE_ROOT_DIR}" "${INTERSENSE_ROOT_DIR}/SDK" ${_IS_INSTALLDIRS}
 	PATH_SUFFIXES
-	Linux/Sample
-	MacOSX/Sample
 	"Windows/Sample/Visual C++ 2005"
-	"Windows/Sample/Visual C++ 2005 (single tracker)")
+	"Windows/Sample/Visual C++ 2005 (single tracker)"
+	Linux/Sample
+	MacOSX/Sample)
 
 include(FindPackageHandleStandardArgs)
 
@@ -81,8 +95,8 @@ if(WIN32)
 else() # Only MSVC on Windows theoretically needs import libraries, so...
 	find_library(INTERSENSE_LIBRARY
 		NAMES isense
-		PATHS "${INTERSENSE_ROOT_DIR}" "${INTERSENSE_ROOT_DIR}/SDK"
-		PATH_SUFFIXES "${_SDKDIR}/${_ARCH}")
+		PATHS "${INTERSENSE_ROOT_DIR}" "${INTERSENSE_ROOT_DIR}/SDK" ${_IS_INSTALLDIRS}
+		PATH_SUFFIXES "${_IS_SDKDIR}/${_IS_ARCH}")
 
 	find_package_handle_standard_args(InterSense
 		DEFAULT_MSG

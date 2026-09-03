@@ -5,6 +5,7 @@
 #
 # Non-cache variables you might use in your CMakeLists.txt:
 #  CPPCHECK_FOUND
+#  CPPCHECK_VERSION
 #  CPPCHECK_POSSIBLEERROR_ARG
 #  CPPCHECK_UNUSEDFUNC_ARG
 #  CPPCHECK_STYLE_ARG
@@ -19,14 +20,17 @@
 #  FindPackageHandleStandardArgs (known included with CMake >=2.6.2)
 #
 # Original Author:
-# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
-# http://academic.cleardefinition.com
+# 2009-2010 Rylie Pavlik <rylie@ryliepavlik.com>
+# https://ryliepavlik.com/
 # Iowa State University HCI Graduate Program/VRAC
 #
-# Copyright Iowa State University 2009-2010.
+# Copyright 2009-2010, Iowa State University
+#
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
+#
+# SPDX-License-Identifier: BSL-1.0
 
 file(TO_CMAKE_PATH "${CPPCHECK_ROOT_DIR}" CPPCHECK_ROOT_DIR)
 set(CPPCHECK_ROOT_DIR
@@ -63,10 +67,10 @@ set(CMAKE_FIND_APPBUNDLE ${_oldappbundlesetting})
 
 # Find out where our test file is
 get_filename_component(_cppcheckmoddir ${CMAKE_CURRENT_LIST_FILE} PATH)
-set(_cppcheckdummyfile "${_cppcheckmoddir}/Findcppcheck.cpp")
-if(NOT EXISTS "${_cppcheckdummyfile}")
+set(_cppchecktestfile "${_cppcheckmoddir}/Findcppcheck.cpp")
+if(NOT EXISTS "${_cppchecktestfile}")
 	message(FATAL_ERROR
-		"Missing file ${_cppcheckdummyfile} - should be alongside Findcppcheck.cmake, can be found at https://github.com/rpavlik/cmake-modules")
+		"Missing file ${_cppchecktestfile} - should be alongside Findcppcheck.cmake, can be found at https://github.com/rpavlik/cmake-modules")
 endif()
 
 function(_cppcheck_test_arg _resultvar _arg)
@@ -78,7 +82,7 @@ function(_cppcheck_test_arg _resultvar _arg)
 		"${CPPCHECK_EXECUTABLE}"
 		"${_arg}"
 		"--quiet"
-		"${_cppcheckdummyfile}"
+		"${_cppchecktestfile}"
 		RESULT_VARIABLE
 		_cppcheck_result
 		OUTPUT_QUIET
@@ -148,6 +152,11 @@ endif()
 
 set(CPPCHECK_ALL
 	"${CPPCHECK_EXECUTABLE} ${CPPCHECK_POSSIBLEERROR_ARG} ${CPPCHECK_UNUSEDFUNC_ARG} ${CPPCHECK_STYLE_ARG} ${CPPCHECK_QUIET_ARG} ${CPPCHECK_INCLUDEPATH_ARG} some/include/path")
+
+execute_process(COMMAND "${CPPCHECK_EXECUTABLE}" --version
+  OUTPUT_VARIABLE CPPCHECK_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+string(REGEX REPLACE ".* ([0-9]\\.([0-9]\\.[0-9])?)" "\\1"
+    CPPCHECK_VERSION "${CPPCHECK_VERSION}")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(cppcheck

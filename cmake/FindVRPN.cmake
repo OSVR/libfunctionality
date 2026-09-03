@@ -19,14 +19,17 @@
 #  FindPackageHandleStandardArgs (known included with CMake >=2.6.2)
 #
 # Original Author:
-# 2009-2012 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
-# http://academic.cleardefinition.com
+# 2009-2012 Rylie Pavlik <rylie@ryliepavlik.com>
+# https://ryliepavlik.com/
 # Iowa State University HCI Graduate Program/VRAC
 #
-# Copyright Iowa State University 2009-2012.
+# Copyright 2009-2012, Iowa State University
+#
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
+#
+# SPDX-License-Identifier: BSL-1.0
 
 set(VRPN_ROOT_DIR
 	"${VRPN_ROOT_DIR}"
@@ -116,7 +119,7 @@ if(NOT WIN32)
 endif()
 
 if(WIN32)
-	find_package(Libusb1 ${_vrpn_quiet})
+	find_package(Libusb1 QUIET)
 	if(LIBUSB1_FOUND)
 		list(APPEND _deps_libs ${LIBUSB1_LIBRARIES})
 		list(APPEND _deps_includes ${LIBUSB1_INCLUDE_DIRS})

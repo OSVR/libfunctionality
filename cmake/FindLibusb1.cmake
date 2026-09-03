@@ -14,11 +14,14 @@
 #  FindPackageHandleStandardArgs (known included with CMake >=2.6.2)
 #
 # Original Author:
-# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
-# http://academic.cleardefinition.com
-# Iowa State University HCI Graduate Program/VRAC
+# 2009-2021 Rylie Pavlik <rylie@ryliepavlik.com>
+# https://ryliepavlik.com/
 #
-# Copyright Iowa State University 2009-2010.
+# Copyright 2009-2010, Iowa State University
+# Copyright 2021, Collabora, Ltd.
+#
+# SPDX-License-Identifier: BSL-1.0
+#
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
@@ -35,20 +38,22 @@ if(WIN32)
 	program_files_fallback_glob(_dirs "LibUSB-Win32")
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		if(MSVC)
-			set(_lib_suffixes lib/msvc_x64)
+			set(_lib_suffixes lib/msvc_x64 MS64/static)
 		endif()
 	else()
 		if(MSVC)
-			set(_lib_suffixes lib/msvc)
+			set(_lib_suffixes lib/msvc MS32/static)
 		elseif(COMPILER_IS_GNUCXX)
 			set(_lib_suffixes lib/gcc)
 		endif()
 	endif()
 else()
 	set(_lib_suffixes)
-	find_package(PkgConfig QUIET)
-	if(PKG_CONFIG_FOUND)
-		pkg_check_modules(PC_LIBUSB1 libusb-1.0)
+	if(NOT ANDROID)
+		find_package(PkgConfig QUIET)
+		if(PKG_CONFIG_FOUND)
+			pkg_check_modules(PC_LIBUSB1 QUIET libusb-1.0)
+		endif()
 	endif()
 endif()
 
@@ -62,16 +67,20 @@ find_path(LIBUSB1_INCLUDE_DIR
 	HINTS
 	"${LIBUSB1_ROOT_DIR}"
 	PATH_SUFFIXES
+	include/libusb-1.0
 	include
 	libusb-1.0)
 
 find_library(LIBUSB1_LIBRARY
 	NAMES
+	libusb-1.0
 	usb-1.0
 	PATHS
 	${PC_LIBUSB1_LIBRARY_DIRS}
 	${PC_LIBUSB1_LIBDIR}
 	${_dirs}
+	HINTS
+	"${LIBUSB1_ROOT_DIR}"
 	PATH_SUFFIXES
 	${_lib_suffixes})
 

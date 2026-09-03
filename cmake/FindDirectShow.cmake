@@ -10,20 +10,23 @@
 # Initially in VRPN - Distributed under the Boost Software License, Version 1.0.
 #
 # Almost entirely re-written by:
-# 2012 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
-# http://academic.cleardefinition.com
+# 2012 Rylie Pavlik <rylie@ryliepavlik.com>
+# https://ryliepavlik.com/
 # Iowa State University HCI Graduate Program/VRAC
 #
-# Copyright Iowa State University 2012.
+# Copyright 2012, Iowa State University
+#
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
+#
+# SPDX-License-Identifier: BSL-1.0
 
 # Look for one of the sample files.
 
 set(_ds_quiet)
 if(DirectShow_FIND_QUIETLY)
-    set(_ds_quiet QUIET)
+	set(_ds_quiet QUIET)
 endif()
 find_package(WindowsSDK ${_ds_quiet})
 find_package(DirectX ${_ds_quiet})
@@ -106,15 +109,15 @@ _directshow_check_current_qedit()
 # Compose a list of possible directories that might hold a qedit.h file.
 set(DIRECTSHOW_QEDIT_SEARCH)
 if(WINDOWSSDK_FOUND AND NOT DIRECTSHOW_QEDIT_INCLUDE_DIR)
-    foreach(_sdk ${WINDOWSSDK_DIRS})
+	foreach(_sdk ${WINDOWSSDK_DIRS})
 		windowssdk_build_lookup("${_sdk}" _build)
 		if(_build AND ("${_build}" VERSION_LESS 6.2))
-	        get_windowssdk_include_dirs("${_sdk}" _dirs)
-	        if(_dirs)
-	            list(APPEND DIRECTSHOW_QEDIT_SEARCH ${_dirs})
-	        endif()
+		get_windowssdk_include_dirs("${_sdk}" _dirs)
+		if(_dirs)
+			list(APPEND DIRECTSHOW_QEDIT_SEARCH ${_dirs})
 		endif()
-    endforeach()
+		endif()
+	endforeach()
 endif()
 
 # This one we can grab from another SDK version.
@@ -149,14 +152,14 @@ endif()
 
 set(DIRECTSHOW_STRMIIDS_SEARCH)
 if(WINDOWSSDK_FOUND AND NOT DIRECTSHOW_STRMIIDS_LIBRARY)
-    foreach(_sdk ${WINDOWSSDK_DIRS})
+	foreach(_sdk ${WINDOWSSDK_DIRS})
 		get_windowssdk_library_dirs("${_sdk}" _dirs)
-		message(STATUS "- ${_dirs}")
 		if(_dirs)
 			list(APPEND DIRECTSHOW_STRMIIDS_SEARCH ${_dirs})
 		endif()
-    endforeach()
+	endforeach()
 endif()
+
 find_library(DIRECTSHOW_STRMIIDS_LIBRARY
 	NAMES
 	strmiids
