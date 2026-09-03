@@ -4,7 +4,7 @@
     @date 2018
 
     @author
-    Ryan Pavlik <ryan.pavlik@collabora.com>
+    Rylie Pavlik <rylie.pavlik@collabora.com>
 */
 
 // Copyright (c) 2018 Collabora, Ltd.
